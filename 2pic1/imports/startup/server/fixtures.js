@@ -1,7 +1,7 @@
 // Fill the DB with example data on startup
 
 import { Meteor } from "meteor/meteor";
-import { Comparisons } from "../../api/comparisons/comparisons.js";
+import Comparisons from "../../api/comparisons/comparisons.js";
 
 Meteor.startup(() => {
   if (Comparisons.find().count() === 0) {

@@ -1,4 +1,8 @@
-// Client entry point, imports all client code
+import { Meteor } from "meteor/meteor";
+import { render } from "react-dom";
+import React from "react";
+import AppComponent from "../imports/ui/containers/app/app.js";
 
-import '/imports/startup/client';
-import '/imports/startup/both';
+Meteor.startup(() => {
+  render(<AppComponent />, document.getElementById("app"));
+});
