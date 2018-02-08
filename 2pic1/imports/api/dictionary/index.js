@@ -1,0 +1,2 @@
+import "./dictionary";
+import "./methods";
