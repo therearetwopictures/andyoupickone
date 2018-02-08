@@ -2,4 +2,4 @@
 
 import { Mongo } from "meteor/mongo";
 
-export const Links = new Mongo.Collection("comparisons");
+export const Comparisons = new Mongo.Collection("comparisons");

@@ -1,34 +1,20 @@
 // Fill the DB with example data on startup
 
-import { Meteor } from 'meteor/meteor';
-import { Links } from '../../api/links/links.js';
+import { Meteor } from "meteor/meteor";
+import { Comparisons } from "../../api/comparisons/comparisons.js";
 
 Meteor.startup(() => {
-  // if the Links collection is empty
-  if (Links.find().count() === 0) {
+  if (Comparisons.find().count() === 0) {
     const data = [
       {
-        title: 'Do the Tutorial',
-        url: 'https://www.meteor.com/try',
-        createdAt: new Date(),
-      },
-      {
-        title: 'Follow the Guide',
-        url: 'http://guide.meteor.com',
-        createdAt: new Date(),
-      },
-      {
-        title: 'Read the Docs',
-        url: 'https://docs.meteor.com',
-        createdAt: new Date(),
-      },
-      {
-        title: 'Discussions',
-        url: 'https://forums.meteor.com',
-        createdAt: new Date(),
-      },
+        urlA:
+          "https://firebasestorage.googleapis.com/v0/b/boomtown-e933c.appspot.com/o/urlA.jpg?alt=media&token=1dbd46ea-bcb5-4b42-a4b5-df6ce1d2ac2e",
+        urlB:
+          "https://firebasestorage.googleapis.com/v0/b/boomtown-e933c.appspot.com/o/urlB.jpg?alt=media&token=8b933e2e-941c-421d-82b6-c01ac7f01453",
+        createdAt: new Date()
+      }
     ];
 
-    data.forEach(link => Links.insert(link));
+    data.forEach(comparison => Comparisons.insert(comparison));
   }
 });
