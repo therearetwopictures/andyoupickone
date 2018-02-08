@@ -5,14 +5,17 @@ import { check } from "meteor/check";
 import { Comparisons } from "./comparisons.js";
 
 Meteor.methods({
-  "comparisons.insert"(urlA, urlB) {
-    check(urlA, String);
-    check(urlB, String);
+  "comparisons.insert"(title, url) {
+    check(url, String);
+    check(title, String);
 
     return Comparisons.insert({
-      urlA,
-      urlB,
+      url,
+      title,
       createdAt: new Date()
     });
+  },
+  "comparisons.addNew"() {
+    return Comparisons.insert({});
   }
 });
