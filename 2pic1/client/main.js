@@ -7,11 +7,6 @@ Meteor.startup(() => {
   Meteor.call("comparisons.addOne");
   Meteor.call("comparisons.addOne");
   Meteor.call("comparisons.addOne");
-  Meteor.call("comparisons.addOne");
-  Meteor.call("comparisons.addOne");
-  Meteor.call("comparisons.addOne");
-  Meteor.call("comparisons.addOne");
-  Meteor.call("comparisons.addOne");
-  Meteor.call("comparisons.addOne");
+
   render(<AppComponent />, document.getElementById("app"));
 });

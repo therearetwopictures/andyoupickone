@@ -10,9 +10,6 @@ const comparisonsSchema = new SimpleSchema({
   },
   urlB: {
     type: String
-  },
-  createdAt: {
-    type: Date
   }
 });
 Comparisons.attachSchema(comparisonsSchema);
