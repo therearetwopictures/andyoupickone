@@ -13,9 +13,7 @@ const seedGenerator = () => {
 Meteor.methods({
   "dictionary.generateSeedWords"() {
     return seedGenerator().map(async seed => {
-      console.log(seed);
       const word = await Dictionary.find({ id: `${seed}` }).fetch();
-      console.log(word[0].word);
       return word[0].word;
     });
   }
