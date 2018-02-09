@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import "./styles.css";
 
 export default class picture extends Component {
   render() {
-    return <h1>Picture</h1>;
+    return (
+      <div className="picture-wrapper">
+        <div className="picture">Picture</div>
+        <div className="picture">Picture</div>
+      </div>
+    );
   }
 }
