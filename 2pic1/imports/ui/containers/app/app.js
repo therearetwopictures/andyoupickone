@@ -7,12 +7,22 @@ export default class home extends Component {
   constructor(props) {
     super(props);
   }
+  upload() {
+    Meteor.call("comparisons.upload");
+  }
 
   render() {
     return (
       <div>
         <Header />
         <Picture />
+        <button
+          onClick={() => {
+            this.upload();
+          }}
+        >
+          upload
+        </button>
       </div>
     );
   }
