@@ -1,0 +1,24 @@
+.header{
+
+}
+
+.picture-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: column-wrap;
+    height: 100%;
+    
+}
+@media (max-width: 500px) {
+  .picture-wrapper {
+    display: block;
+  }
+}
+
+.picture{
+  width: 500px;
+  height: 500px;
+  background-color: gray;
+  margin: 20px;
+}
