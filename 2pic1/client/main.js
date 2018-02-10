@@ -7,5 +7,6 @@ Meteor.startup(() => {
   // Meteor.call("users.sendCookie");
   // Meteor.call("comparisons.getRandOne");
 
+  Meteor.call("users.sendCookie");
   render(<AppComponent />, document.getElementById("app"));
 });
