@@ -31,8 +31,10 @@ const getUrl = async () => {
   let seedWords = undefined;
   while (!url) {
     seedWords = searchWords();
-    const imageObj = (await imageSearch.search(seedWords))[0];
-    if (imageObj) url = imageObj.url;
+    const imageObj = await imageSearch.search(seedWords);
+    if (imageObj[0]) {
+      url = imageObj[Math.floor(Math.random() * imageObj.length)].url;
+    }
   }
   return [url, seedWords.slice(0, -18)];
 };
@@ -40,8 +42,12 @@ const getUrl = async () => {
 const randNum = () => Math.floor(Math.random() * 143090).toString();
 
 Meteor.methods({
-  "comparisons.getRandOne"() {
+  "comparisons.getRandOne"(userId = null) {
+    Users.find(userID, { compId })[{}];
     return Comparisons.aggregate([{ $sample: { size: 1 } }]);
+  },
+  "comparisons.getRandFive"(userId = null) {
+    return Comparisons.aggregate([{ $sample: { size: 5 } }]);
   },
   async "comparisons.addOne"() {
     const [urlA, seedA] = await getUrl();
@@ -53,12 +59,13 @@ Meteor.methods({
     const awsUrlB = await getUniqueImgNameFromUrl(urlB);
     await downloadImage(urlB, awsUrlB);
 
-    await Comparisons.insert({
+    const compId = await Comparisons.insert({
       urlA: getAWSUrl(awsUrlA),
       urlB: getAWSUrl(awsUrlB)
     });
 
     await CompMeta.insert({
+      _id: compId,
       urlA: getAWSUrl(awsUrlA),
       seedA,
       urlB: getAWSUrl(awsUrlB),
