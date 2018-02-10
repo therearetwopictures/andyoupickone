@@ -6,6 +6,11 @@ import Comparisons from "./comparisons.js";
 import CompMeta from "../compMeta/compMeta";
 import { Dictionary } from "../dictionary/dictionary.js";
 import GoogleImages from "google-images";
+import {
+  downloadImage,
+  getAWSUrl,
+  getUniqueImgNameFromUrl
+} from "../helpers/imageUtils.js";
 
 const imageSearch = new GoogleImages(
   Meteor.settings.googleSearch[0].engineId,
@@ -35,25 +40,28 @@ const getUrl = async () => {
 const randNum = () => Math.floor(Math.random() * 143090).toString();
 
 Meteor.methods({
-  // "comparisons.getRand"(prevSeen) {
-  //   Comparisons.find({})
-  // }
+  "comparisons.getRandOne"() {
+    return Comparisons.aggregate([{ $sample: { size: 1 } }]);
+  },
   async "comparisons.addOne"() {
     const [urlA, seedA] = await getUrl();
     const [urlB, seedB] = await getUrl();
-    console.log(seedA);
+    // console.log(seedA);
 
-    // lindseys function here
+    const awsUrlA = await getUniqueImgNameFromUrl(urlA);
+    await downloadImage(urlA, awsUrlA);
+    const awsUrlB = await getUniqueImgNameFromUrl(urlB);
+    await downloadImage(urlB, awsUrlB);
 
-    Comparisons.insert({
-      urlA,
-      urlB
+    await Comparisons.insert({
+      urlA: getAWSUrl(awsUrlA),
+      urlB: getAWSUrl(awsUrlB)
     });
 
-    CompMeta.insert({
-      urlA,
+    await CompMeta.insert({
+      urlA: getAWSUrl(awsUrlA),
       seedA,
-      urlB,
+      urlB: getAWSUrl(awsUrlB),
       seedB
     });
   }
