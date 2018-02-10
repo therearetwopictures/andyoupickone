@@ -35,13 +35,13 @@ const getUrl = async () => {
 const randNum = () => Math.floor(Math.random() * 143090).toString();
 
 Meteor.methods({
-  // "comparisons.getRand"(prevSeen) {
-  //   Comparisons.find({})
-  // }
+  "comparisons.getRandOne"() {
+    return Comparisons.aggregate([{ $sample: { size: 1 } }]);
+  },
   async "comparisons.addOne"() {
     const [urlA, seedA] = await getUrl();
     const [urlB, seedB] = await getUrl();
-    console.log(seedA);
+    // console.log(seedA);
 
     // lindseys function here
 
