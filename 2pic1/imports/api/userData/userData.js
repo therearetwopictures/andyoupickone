@@ -4,12 +4,17 @@ import SimpleSchema from "simpl-schema";
 const UserData = new Mongo.Collection("userData");
 
 const usersSchema = new SimpleSchema({
-  userId: {
+  _id: {
     type: String
   },
-  // picks: {
-  //   type: Array
-  // },
+  picks: {
+    type: Array,
+    optional: true
+  },
+  "picks.$": {
+    type: Object,
+    optional: true
+  },
   "picks.$.comparisonId": {
     type: String,
     optional: true
@@ -20,6 +25,14 @@ const usersSchema = new SimpleSchema({
   },
   location: {
     type: String,
+    optional: true
+  },
+  sessions: {
+    type: Array,
+    optional: true
+  },
+  "sessions.$": {
+    type: Object,
     optional: true
   },
   "sessions.$.start": {
