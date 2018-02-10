@@ -3,7 +3,6 @@
 import { Meteor } from "meteor/meteor";
 import Comparisons from "./comparisons.js";
 import CompMeta from "../compMeta/compMeta";
-import GoogleImages from "google-images";
 import {
   downloadImage,
   getAWSUrl,
@@ -11,10 +10,6 @@ import {
 } from "../helpers/imageUtils.js";
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
-const imageSearch = new GoogleImages(
-  Meteor.settings.googleSearch[0].engineId,
-  Meteor.settings.googleSearch[0].apiKey
-);
 Meteor.methods({
   "comparisons.getRandOne"(userId = null) {
     Users.find(userID, { compId })[{}];
