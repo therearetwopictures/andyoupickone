@@ -12,7 +12,7 @@ import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
 Meteor.methods({
   "comparisons.getRandOne"(userId = null) {
-    Users.find(userID, { compId })[{}];
+    // Users.find(userID, { compId })[{}];
     return Comparisons.aggregate([{ $sample: { size: 1 } }]);
   },
   "comparisons.getRandFive"(userId = null) {

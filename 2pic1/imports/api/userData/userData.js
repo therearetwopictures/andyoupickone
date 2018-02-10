@@ -35,6 +35,10 @@ const usersSchema = new SimpleSchema({
     type: Object,
     optional: true
   },
+  "sessions.$.sessionId": {
+    type: String,
+    optional: true
+  },
   "sessions.$.start": {
     type: Date,
     optional: true

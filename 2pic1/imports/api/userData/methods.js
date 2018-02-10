@@ -6,16 +6,22 @@ import UserData from "./userData.js";
 Meteor.methods({
   "userData.createUserSession"() {
     let currentUser = UserData.find({ _id: this.userId }).fetch();
+    const sessionId = new Meteor.Collection.ObjectID()._str;
+    console.log(sessionId);
     // console.log(currentUser);
     if (currentUser && currentUser.length === 0) {
       UserData.insert({
         _id: this.userId,
-        sessions: [{ start: new Date().toISOString() }]
+        sessions: [{ sessionId: sessionId, start: new Date().toISOString() }]
       });
     } else {
       UserData.update(
         { _id: this.userId },
-        { $push: { sessions: { start: new Date().toISOString() } } }
+        {
+          $push: {
+            sessions: { sessionId: sessionId, start: new Date().toISOString() }
+          }
+        }
       );
     }
     // console.log(this.userId);
@@ -24,12 +30,10 @@ Meteor.methods({
     UserData.update(
       { _id: this.userId },
       {
-        $set: {
+        $push: {
           picks: {
-            $push: {
-              comparissonId: /*(comparissonId)*/ "",
-              pick: /*A or B*/ ""
-            }
+            comparissonId: /*(comparissonId)*/ "",
+            pick: /*A or B*/ ""
           }
         }
       }
