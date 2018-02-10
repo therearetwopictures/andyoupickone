@@ -4,6 +4,6 @@ import React from "react";
 import AppComponent from "../imports/ui/containers/app/app.js";
 
 Meteor.startup(() => {
-  Meteor.call("users.sendCookie");
+  AccountsAnonymous.login();
   render(<AppComponent />, document.getElementById("app"));
 });

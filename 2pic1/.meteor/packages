@@ -22,3 +22,4 @@ johanbrook:publication-collector  # Test a Meteor publication by collecting its 
 
 aldeed:collection2@3.0.0
 ostrio:cookies
+brettle:accounts-anonymous
