@@ -1,6 +1,7 @@
 import Header from "../../components/header/header.js";
 import Picture from "../../components/picture/picture.js";
 import "../../../api/comparisons/comparisons";
+import "../../../api/compMeta/compMeta";
 import { Meteor } from "meteor/meteor";
 
 import React, { Component } from "react";
@@ -21,6 +22,7 @@ export default class App extends Component {
   handleClick(pick) {
     console.log(typeof this.state._id);
     Meteor.call("userData.updatePicks", this.state._id, pick);
+    Meteor.call("compMeta.updatePicks", this.state._id, pick);
     Meteor.call("comparisons.getRandOne", (err, res) => {
       if (err) console.log(err);
       const { urlA, urlB, _id } = res[0];

@@ -1,1 +1,2 @@
 import "./compMeta";
+import "./methods";

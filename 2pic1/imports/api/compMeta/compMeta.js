@@ -16,6 +16,14 @@ const compMetaSchema = new SimpleSchema({
   },
   seedB: {
     type: String
+  },
+  A: {
+    type: Number,
+    optional: true
+  },
+  B: {
+    type: Number,
+    optional: true
   }
 });
 CompMeta.attachSchema(compMetaSchema);
