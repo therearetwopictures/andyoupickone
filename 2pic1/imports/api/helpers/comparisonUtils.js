@@ -1,5 +1,6 @@
 import { Dictionary } from "../dictionary/dictionary.js";
 import GoogleImages from "google-images";
+import "isomorphic-fetch";
 
 const imageSearch = new GoogleImages(
   Meteor.settings.googleSearch[0].engineId,
@@ -22,6 +23,19 @@ export const getUrl = async () => {
     const imageObj = await imageSearch.search(seedWords);
     if (imageObj[0]) {
       url = imageObj[Math.floor(Math.random() * imageObj.length)].url;
+      /\.jpg|\.png|\.gif|\.jpeg/.test(url)
+        ? await fetch(url)
+            .then(res => {
+              console.log(res.headers.get("content-type"));
+
+              if (!/^image/.test(res.headers.get("content-type")))
+                throw new Error("not actually an image.. c'mon google!");
+            })
+            .catch(e => {
+              console.log(e.message);
+              url = undefined;
+            })
+        : (url = undefined);
     }
   }
   return [url, seedWords.slice(0, -18)];
