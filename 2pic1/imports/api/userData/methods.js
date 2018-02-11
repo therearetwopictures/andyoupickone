@@ -26,14 +26,14 @@ Meteor.methods({
     }
     // console.log(this.userId);
   },
-  "userData.updatePicks"() {
+  "userData.updatePicks"(comparisonId, pick) {
     UserData.update(
       { _id: this.userId },
       {
         $push: {
           picks: {
-            comparissonId: /*(comparissonId)*/ "",
-            pick: /*A or B*/ ""
+            comparisonId,
+            pick
           }
         }
       }
