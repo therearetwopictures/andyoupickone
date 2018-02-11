@@ -5,17 +5,17 @@ import Comparisons from "./comparisons.js";
 import CompMeta from "../compMeta/compMeta";
 import {
   downloadImage,
-  getAWSUrl,
+  getGCSUrl,
   getUniqueImgNameFromSeed
 } from "../helpers/imageUtils.js";
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
 Meteor.methods({
-  "comparisons.getRandOne"(userId = null) {
-    // Users.find(userID, { compId })[{}];
+  "comparisons.getRandOne"(userId = null, pick, compId) {
+    //Users.find(userID, { compId })[{}];
     return Comparisons.aggregate([{ $sample: { size: 1 } }]);
   },
-  "comparisons.getRandFive"(userId = null) {
+  "comparisons.getRandFive"(userId = null, pick) {
     return Comparisons.aggregate([{ $sample: { size: 5 } }]);
   },
   async "comparisons.addOne"() {
@@ -45,19 +45,19 @@ Meteor.methods({
       console.log(e, "hey, nice catch!!~");
       return;
     }
-    console.log(getAWSUrl(awsUrlA));
-    console.log(getAWSUrl(awsUrlB));
+    console.log(getGCSUrl(awsUrlA));
+    console.log(getGCSUrl(awsUrlB));
     await Comparisons.insert({
       _id: compId,
-      urlA: getAWSUrl(awsUrlA),
-      urlB: getAWSUrl(awsUrlB)
+      urlA: getGCSUrl(awsUrlA),
+      urlB: getGCSUrl(awsUrlB)
     });
 
     await CompMeta.insert({
       _id: compId,
-      urlA: getAWSUrl(awsUrlA),
+      urlA: getGCSUrl(awsUrlA),
       seedA,
-      urlB: getAWSUrl(awsUrlB),
+      urlB: getGCSUrl(awsUrlB),
       seedB
     });
   }
