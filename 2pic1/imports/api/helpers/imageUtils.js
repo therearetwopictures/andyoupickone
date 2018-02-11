@@ -81,8 +81,7 @@ export const downloadImage = (url, downloadedFileName) => {
 
     download(url, options, function(err) {
       if (err) {
-        throw err;
-        reject(console.log(err));
+        reject(err);
       } else {
         resolve(uploadImageToAWS(`${options.directory}${options.filename}`));
       }
@@ -94,13 +93,12 @@ export const downloadImage = (url, downloadedFileName) => {
 // @params url with a file name and extension at the end
 // @returns the file name and extension prepended with date timestamp
 // format: ex. 2018-02-09T20:54:55.686Z
-export const getUniqueImgNameFromUrl = url => {
+export const getUniqueImgNameFromSeed = (compId, seed, aOrB, fileType) => {
+  if (fileType === "jpeg") fileType = "jpg";
   const date = new Date();
-  return (
-    date.toISOString() +
-    "-" +
-    url.substring(url.lastIndexOf("/") + 1).split("?")[0]
-  );
+  return `${date.toISOString()}-${compId}-${seed
+    .split(" ")
+    .join("_")}-${aOrB}.${fileType}`;
 };
 
 //

@@ -6,6 +6,8 @@ import AppComponent from "../imports/ui/containers/app/app.js";
 Meteor.startup(() => {
   AccountsAnonymous.login();
   Meteor.call("userData.createUserSession");
+  Meteor.call("comparisons.addOne");
+
   // Meteor.call("comparisons.getRandOne");
 
   // Meteor.call("users.sendCookie");

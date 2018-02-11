@@ -6,7 +6,7 @@ import CompMeta from "../compMeta/compMeta";
 import {
   downloadImage,
   getAWSUrl,
-  getUniqueImgNameFromUrl
+  getUniqueImgNameFromSeed
 } from "../helpers/imageUtils.js";
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
@@ -19,16 +19,36 @@ Meteor.methods({
     return Comparisons.aggregate([{ $sample: { size: 5 } }]);
   },
   async "comparisons.addOne"() {
-    const [urlA, seedA] = await getUrl();
-    const [urlB, seedB] = await getUrl();
+    const [urlA, seedA, fileTypeA] = await getUrl();
+    const [urlB, seedB, fileTypeB] = await getUrl();
     // console.log(seedA);
 
-    const awsUrlA = await getUniqueImgNameFromUrl(urlA);
-    await downloadImage(urlA, awsUrlA);
-    const awsUrlB = await getUniqueImgNameFromUrl(urlB);
-    await downloadImage(urlB, awsUrlB);
+    const compId = new Meteor.Collection.ObjectID()._str;
 
-    const compId = await Comparisons.insert({
+    const awsUrlA = await getUniqueImgNameFromSeed(
+      compId,
+      seedA,
+      "A",
+      fileTypeA
+    );
+    const awsUrlB = await getUniqueImgNameFromSeed(
+      compId,
+      seedB,
+      "B",
+      fileTypeB
+    );
+    try {
+      await downloadImage(urlA, awsUrlA);
+      await downloadImage(urlB, awsUrlB);
+    } catch (e) {
+      Meteor.call("comparisons.addOne");
+      console.log(e, "hey, nice catch!!~");
+      return;
+    }
+    console.log(getAWSUrl(awsUrlA));
+    console.log(getAWSUrl(awsUrlB));
+    await Comparisons.insert({
+      _id: compId,
       urlA: getAWSUrl(awsUrlA),
       urlB: getAWSUrl(awsUrlB)
     });

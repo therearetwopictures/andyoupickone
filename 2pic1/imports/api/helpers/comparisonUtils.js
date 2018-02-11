@@ -8,7 +8,7 @@ const imageSearch = new GoogleImages(
 );
 export const searchWords = () =>
   Dictionary.find(
-    { $or: [{ id: randNum() }, { id: randNum() }, { id: randNum() }] },
+    { $or: [{ id: randNum() }, { id: randNum() }] },
     { fields: { _id: 0, word: 1 } }
   )
     .fetch()
@@ -18,6 +18,7 @@ export const searchWords = () =>
 export const getUrl = async () => {
   let url = undefined;
   let seedWords = undefined;
+  let fileType = undefined;
   while (!url) {
     seedWords = searchWords();
     const imageObj = await imageSearch.search(seedWords);
@@ -26,10 +27,9 @@ export const getUrl = async () => {
       /\.jpg|\.png|\.gif|\.jpeg/.test(url)
         ? await fetch(url)
             .then(res => {
-              console.log(res.headers.get("content-type"));
-
               if (!/^image/.test(res.headers.get("content-type")))
                 throw new Error("not actually an image.. c'mon google!");
+              fileType = res.headers.get("content-type").split("/")[1];
             })
             .catch(e => {
               console.log(e.message);
@@ -38,7 +38,7 @@ export const getUrl = async () => {
         : (url = undefined);
     }
   }
-  return [url, seedWords.slice(0, -18)];
+  return [url, seedWords.slice(0, -18), fileType];
 };
 
 export const randNum = () => Math.floor(Math.random() * 143090).toString();

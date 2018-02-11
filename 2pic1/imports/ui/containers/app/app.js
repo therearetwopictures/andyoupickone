@@ -22,14 +22,14 @@ export default class App extends Component {
     console.log(typeof this.state._id);
     Meteor.call("userData.updatePicks", this.state._id, pick);
     Meteor.call("comparisons.getRandOne", (err, res) => {
-      if (err) throw err;
+      if (err) console.log(err);
       const { urlA, urlB, _id } = res[0];
       this.setState({ urlA, urlB, _id });
     });
   }
   componentDidMount() {
     Meteor.call("comparisons.getRandOne", (err, res) => {
-      if (err) throw err;
+      if (err) console.log(err);
       const { urlA, urlB, _id } = res[0];
       this.setState({ urlA, urlB, _id });
     });
