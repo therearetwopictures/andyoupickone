@@ -9,7 +9,7 @@ export default class picture extends Component {
           <img
             src={this.props.urlA}
             onClick={() => {
-              this.props.handleClick();
+              this.props.handleClick("A");
             }}
           />
         </div>
@@ -17,7 +17,7 @@ export default class picture extends Component {
           <img
             src={this.props.urlB}
             onClick={() => {
-              this.props.handleClick();
+              this.props.handleClick("B");
             }}
           />
         </div>

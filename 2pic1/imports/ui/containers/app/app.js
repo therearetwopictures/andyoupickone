@@ -11,24 +11,27 @@ export default class App extends Component {
 
     this.state = {
       urlA: "",
-      urlB: ""
+      urlB: "",
+      _id: ""
     };
   }
   upload() {
     // Meteor.call("comparisons.upload");
   }
-  handleClick() {
+  handleClick(pick) {
+    console.log(typeof this.state._id);
+    Meteor.call("userData.updatePicks", this.state._id, pick);
     Meteor.call("comparisons.getRandOne", (err, res) => {
       if (err) throw err;
-      const { urlA, urlB } = res[0];
-      this.setState({ urlA, urlB });
+      const { urlA, urlB, _id } = res[0];
+      this.setState({ urlA, urlB, _id });
     });
   }
   componentDidMount() {
     Meteor.call("comparisons.getRandOne", (err, res) => {
       if (err) throw err;
-      const { urlA, urlB } = res[0];
-      this.setState({ urlA, urlB });
+      const { urlA, urlB, _id } = res[0];
+      this.setState({ urlA, urlB, _id });
     });
   }
 
