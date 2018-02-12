@@ -32,8 +32,14 @@ Meteor.methods({
       };
       classifyImage(defaultParameters)
         .then(results => {
+          let tags = `tag${img}.$.class`;
           // CompMeta.update({ _id: compId }, { $set });
-          console.log(JSON.stringify(results, null, 2));
+          results.images[0].classifiers[0].classes.forEach(tag => {
+            console.log(tag);
+            CompMeta.update({ _id: compId }, { $set: { tags: tag.class } });
+          });
+
+          // console.log(JSON.stringify(results, null, 2));
         })
         .catch(error => console.log(error.message));
     });
