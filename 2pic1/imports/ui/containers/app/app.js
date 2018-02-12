@@ -22,20 +22,27 @@ export default class App extends Component {
     Meteor.call("comparisons.addOne");
   }
   handleClick(pick) {
-    console.log(typeof this.state._id);
+    console.log(this.imageQueue.length);
     Meteor.call("userData.updatePicks", this.state._id, pick);
     Meteor.call("compMeta.updatePicks", this.state._id, pick);
     try {
       this.addImageToQueue()
         .then(res => {
-          console.log(this.imageQueue);
-          this.imageQueue.shift();
-          const { urlA, urlB, _id } = this.imageQueue[0];
-          this.setState({ urlA, urlB, _id });
+          this.setState({ loading: false });
         })
-        .catch(e => console.log(e, "handleclick"));
+        .catch(e => {
+          console.log(e, "handleclick");
+        });
     } catch (e) {
       console.log(e, "error in click");
+    }
+    if (this.imageQueue.length > 1) {
+      this.imageQueue.shift();
+      const { urlA, urlB, _id } = this.imageQueue[0];
+      this.setState({ loading: false, urlA, urlB, _id });
+    } else {
+      this.imageQueue.shift();
+      this.setState({ loading: true });
     }
   }
   addImageToQueue() {
@@ -69,6 +76,7 @@ export default class App extends Component {
             resolve(res);
           })
           .catch(err => {
+            this.addImageToQueue();
             reject(err);
           });
       });
@@ -76,7 +84,7 @@ export default class App extends Component {
   }
   componentDidMount() {
     addProms = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       try {
         addProms.push(this.addImageToQueue());
       } catch (e) {
