@@ -17,33 +17,32 @@ Meteor.methods({
     // if the total number of picks for this comparison is 0, then
     // it has not been seen and we need to generate another comparison
     // for the db
-    const total = CompMeta.aggregate([
-      {
-        $match: {
-          $and: [
-            {
-              _id: random[0]._id,
-              // TODO: delete on production? included as of now, since A, B is optional
-              A: { $ne: null },
-              B: { $ne: null }
-            }
-          ]
+    (async () => {
+      total = CompMeta.aggregate([
+        {
+          $match: {
+            $and: [
+              {
+                _id: random[0]._id,
+                // TODO: delete on production? included as of now, since A, B is optional
+                A: { $ne: null },
+                B: { $ne: null }
+              }
+            ]
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            total: { $add: ["$A", "$B"] }
+          }
         }
-      },
-      {
-        $project: {
-          _id: 0,
-          total: { $add: ["$A", "$B"] }
-        }
-      }
-    ]);
-    console.log(total);
-    if (total !== undefined || total[0].total === 0)
-      Meteor.call("comparisons.addOne");
+      ]);
+      console.log(total);
+      if (total !== undefined || total[0].total === 0)
+        Meteor.call("comparisons.addOne");
+    })();
     return random;
-  },
-  "comparisons.getRandFive"(userId = null, pick) {
-    return Comparisons.aggregate([{ $sample: { size: 5 } }]);
   },
   async "comparisons.addOne"() {
     const [urlA, seedA, fileTypeA] = await getUrl();
@@ -52,28 +51,18 @@ Meteor.methods({
 
     const compId = new Meteor.Collection.ObjectID()._str;
 
-    const awsUrlA = await getUniqueImgNameFromSeed(
-      compId,
-      seedA,
-      "A",
-      fileTypeA
-    );
-    const awsUrlB = await getUniqueImgNameFromSeed(
-      compId,
-      seedB,
-      "B",
-      fileTypeB
-    );
+    const awsUrlA = getUniqueImgNameFromSeed(compId, seedA, "A", fileTypeA);
+    const awsUrlB = getUniqueImgNameFromSeed(compId, seedB, "B", fileTypeB);
     try {
       await downloadImage(urlA, awsUrlA);
       await downloadImage(urlB, awsUrlB);
     } catch (e) {
       Meteor.call("comparisons.addOne");
-      // console.log(e, "hey, nice catch!!~");
+      console.log(e, "hey, nice catch!!~");
       return;
     }
-    // console.log(getGCSUrl(awsUrlA));
-    // console.log(getGCSUrl(awsUrlB));
+    console.log(getGCSUrl(awsUrlA));
+    console.log(getGCSUrl(awsUrlB));
     await Comparisons.insert({
       _id: compId,
       urlA: getGCSUrl(awsUrlA),

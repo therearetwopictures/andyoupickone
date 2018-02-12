@@ -3,8 +3,8 @@ import GoogleImages from "google-images";
 import "isomorphic-fetch";
 
 const imageSearch = new GoogleImages(
-  Meteor.settings.googleSearch[0].engineId,
-  Meteor.settings.googleSearch[0].apiKey
+  Meteor.settings.googleSearch[2].engineId,
+  Meteor.settings.googleSearch[2].apiKey
 );
 export const searchWords = () =>
   Dictionary.find(
@@ -21,10 +21,15 @@ export const getUrl = async () => {
   let fileType = undefined;
   while (!url) {
     seedWords = searchWords();
-    const imageObj = await imageSearch.search(seedWords);
+    let imageObj = [];
+    try {
+      imageObj = await imageSearch.search(seedWords);
+    } catch (e) {
+      console.log("switch the key!!~");
+    }
     if (imageObj[0]) {
       url = imageObj[Math.floor(Math.random() * imageObj.length)].url;
-      /\.jpg|\.png|\.gif|\.jpeg/.test(url)
+      /\.jpg|\.png|\.jpeg/.test(url)
         ? await fetch(url)
             .then(res => {
               if (!/^image/.test(res.headers.get("content-type")))
