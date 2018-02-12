@@ -41,24 +41,32 @@ export default class App extends Component {
   addImageToQueue() {
     return new Promise((resolve, reject) => {
       Meteor.call("comparisons.getRandOne", (err, res) => {
-        if (err) console.log(err);
+        if (err) reject(err);
         const { urlA, urlB, _id } = res[0];
         const fetchA = new Promise((res, rej) => {
           const imgA = new Image();
+          imgA.onload = () => {
+            res("resolved-A");
+          };
+          imgA.onerror = () => {
+            rej(new Error("rejected-A"));
+          };
           imgA.src = urlA;
-          imgA.onload = res();
-          imgA.onerror = rej();
         });
         const fetchB = new Promise((res, rej) => {
           const imgB = new Image();
+          imgB.onload = () => {
+            res("resolved-B");
+          };
+          imgB.onerror = () => {
+            rej(new Error("rejected-B"));
+          };
           imgB.src = urlB;
-          imgB.onload = res();
-          imgB.onerror = rej();
         });
         Promise.all([fetchA, fetchB])
           .then(res => {
             this.imageQueue.push({ urlA, urlB, _id });
-            resolve();
+            resolve(res);
           })
           .catch(err => {
             reject(err);
@@ -72,7 +80,7 @@ export default class App extends Component {
       try {
         addProms.push(this.addImageToQueue());
       } catch (e) {
-        console.log("error in mount");
+        console.log(e, "error in mount");
       }
     }
     Promise.all(addProms)

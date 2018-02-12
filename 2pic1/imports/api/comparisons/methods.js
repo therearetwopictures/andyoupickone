@@ -54,18 +54,8 @@ Meteor.methods({
 
     const compId = new Meteor.Collection.ObjectID()._str;
 
-    const awsUrlA = await getUniqueImgNameFromSeed(
-      compId,
-      seedA,
-      "A",
-      fileTypeA
-    );
-    const awsUrlB = await getUniqueImgNameFromSeed(
-      compId,
-      seedB,
-      "B",
-      fileTypeB
-    );
+    const awsUrlA = getUniqueImgNameFromSeed(compId, seedA, "A", fileTypeA);
+    const awsUrlB = getUniqueImgNameFromSeed(compId, seedB, "B", fileTypeB);
     try {
       await downloadImage(urlA, awsUrlA);
       await downloadImage(urlB, awsUrlB);
