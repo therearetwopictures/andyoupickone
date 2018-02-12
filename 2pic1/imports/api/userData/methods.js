@@ -7,7 +7,7 @@ Meteor.methods({
   "userData.createUserSession"() {
     let currentUser = UserData.find({ _id: this.userId }).fetch();
     const sessionId = new Meteor.Collection.ObjectID()._str;
-    console.log(sessionId);
+    // console.log(sessionId);
     // console.log(currentUser);
     if (currentUser && currentUser.length === 0) {
       UserData.insert({
