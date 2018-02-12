@@ -15,7 +15,6 @@ export function classifyImage(params) {
       if (err) {
         reject(err);
       } else {
-        console.log("inside watson:", res);
         resolve(res);
       }
     });
