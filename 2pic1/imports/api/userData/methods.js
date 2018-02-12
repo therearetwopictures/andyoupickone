@@ -7,19 +7,29 @@ Meteor.methods({
   "userData.createUserSession"() {
     let currentUser = UserData.find({ _id: this.userId }).fetch();
     const sessionId = new Meteor.Collection.ObjectID()._str;
-    console.log(sessionId);
+    // console.log(sessionId);
     // console.log(currentUser);
     if (currentUser && currentUser.length === 0) {
       UserData.insert({
         _id: this.userId,
-        sessions: [{ sessionId: sessionId, start: new Date().toISOString() }]
+        sessions: [
+          {
+            sessionId: sessionId,
+            start: new Date().toISOString(),
+            end: new Date().toISOString()
+          }
+        ]
       });
     } else {
       UserData.update(
         { _id: this.userId },
         {
           $push: {
-            sessions: { sessionId: sessionId, start: new Date().toISOString() }
+            sessions: {
+              sessionId: sessionId,
+              start: new Date().toISOString(),
+              end: new Date().toISOString()
+            }
           }
         }
       );
@@ -35,7 +45,8 @@ Meteor.methods({
             comparisonId,
             pick
           }
-        }
+        },
+        $set: { "sessions.$.end.-1": new Date().toISOString() }
       }
     );
   }

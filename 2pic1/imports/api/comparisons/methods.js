@@ -61,11 +61,11 @@ Meteor.methods({
       await downloadImage(urlB, awsUrlB);
     } catch (e) {
       Meteor.call("comparisons.addOne");
-      console.log(e, "hey, nice catch!!~");
+      // console.log(e, "hey, nice catch!!~");
       return;
     }
-    console.log(getGCSUrl(awsUrlA));
-    console.log(getGCSUrl(awsUrlB));
+    // console.log(getGCSUrl(awsUrlA));
+    // console.log(getGCSUrl(awsUrlB));
     await Comparisons.insert({
       _id: compId,
       urlA: getGCSUrl(awsUrlA),
