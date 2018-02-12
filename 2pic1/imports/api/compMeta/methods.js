@@ -4,13 +4,6 @@ import CompMeta from "../compMeta/compMeta";
 import { classifyImage } from "./watsonHelpers/watson";
 
 const watsonSettings = Meteor.settings.watson;
-const defaultParameters = {
-  api_key: watsonSettings.api_key,
-  imageurl:
-    "https://www.nationalgeographic.com/content/dam/animals/thumbs/rights-exempt/mammals/d/domestic-dog_thumb.jpg",
-  url: watsonSettings.url,
-  use_unauthenticated: false
-};
 
 Meteor.methods({
   "compMeta.updatePicks"(compId, pick) {
@@ -27,9 +20,16 @@ Meteor.methods({
       );
     }
   },
-  "compMeta.classifyImage"() {
-    classifyImage(defaultParameters)
-      .then(results => console.log(JSON.stringify(results, null, 2)))
-      .catch(error => console.log(error.message));
+  "compMeta.classifyImage"(...urls) {
+    urls.forEach(url => {
+      let defaultParameters = {
+        api_key: watsonSettings.api_key,
+        imageurl: url,
+        use_unauthenticated: false
+      };
+      classifyImage(defaultParameters)
+        .then(results => console.log(JSON.stringify(results, null, 2)))
+        .catch(error => console.log(error.message));
+    });
   }
 });
