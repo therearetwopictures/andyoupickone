@@ -17,29 +17,31 @@ Meteor.methods({
     // if the total number of picks for this comparison is 0, then
     // it has not been seen and we need to generate another comparison
     // for the db
-    const total = CompMeta.aggregate([
-      {
-        $match: {
-          $and: [
-            {
-              _id: random[0]._id,
-              // TODO: delete on production? included as of now, since A, B is optional
-              A: { $ne: null },
-              B: { $ne: null }
-            }
-          ]
+    (async () => {
+      total = CompMeta.aggregate([
+        {
+          $match: {
+            $and: [
+              {
+                _id: random[0]._id,
+                // TODO: delete on production? included as of now, since A, B is optional
+                A: { $ne: null },
+                B: { $ne: null }
+              }
+            ]
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            total: { $add: ["$A", "$B"] }
+          }
         }
-      },
-      {
-        $project: {
-          _id: 0,
-          total: { $add: ["$A", "$B"] }
-        }
-      }
-    ]);
-    console.log(total);
-    if (total !== undefined || total[0].total === 0)
-      Meteor.call("comparisons.addOne");
+      ]);
+      console.log(total);
+      if (total !== undefined || total[0].total === 0)
+        Meteor.call("comparisons.addOne");
+    })();
     return random;
   },
   "comparisons.getRandFive"(userId = null, pick) {

@@ -24,7 +24,7 @@ export const getUrl = async () => {
     const imageObj = await imageSearch.search(seedWords);
     if (imageObj[0]) {
       url = imageObj[Math.floor(Math.random() * imageObj.length)].url;
-      /\.jpg|\.png|\.gif|\.jpeg/.test(url)
+      /\.jpg|\.png|\.jpeg/.test(url)
         ? await fetch(url)
             .then(res => {
               if (!/^image/.test(res.headers.get("content-type")))
