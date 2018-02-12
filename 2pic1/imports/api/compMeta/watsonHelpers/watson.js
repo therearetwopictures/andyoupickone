@@ -1,6 +1,3 @@
-// const watson = require("watson-developer-cloud");
-// const apiKey = require("../../../../settings.json");
-
 export function classifyImage(params) {
   return new Promise((resolve, reject) => {
     const VisualRecognitionV3 = require("watson-developer-cloud/visual-recognition/v3");
@@ -24,11 +21,3 @@ export function classifyImage(params) {
     });
   });
 }
-
-const defaultParameters = {
-  api_key: "",
-  imageurl:
-    "https://raw.githubusercontent.com/watson-developer-cloud/doc-tutorial-downloads/master/visual-recognition/fruitbowl.jpg",
-  url: "https://sandbox-watson-proxy.mybluemix.net/visual-recognition/api",
-  use_unauthenticated: true
-};

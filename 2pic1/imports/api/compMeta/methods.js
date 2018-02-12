@@ -20,15 +20,21 @@ Meteor.methods({
       );
     }
   },
-  "compMeta.classifyImage"(...urls) {
-    urls.forEach(url => {
+  "compMeta.classifyImage"(compId, ...urls) {
+    urls.forEach((url, i) => {
+      let img = "";
+      i < 1 ? (img = "A") : (img = "B");
+
       let defaultParameters = {
         api_key: watsonSettings.api_key,
         imageurl: url,
         use_unauthenticated: false
       };
       classifyImage(defaultParameters)
-        .then(results => console.log(JSON.stringify(results, null, 2)))
+        .then(results => {
+          // CompMeta.update({ _id: compId }, { $set });
+          console.log(JSON.stringify(results, null, 2));
+        })
         .catch(error => console.log(error.message));
     });
   }
