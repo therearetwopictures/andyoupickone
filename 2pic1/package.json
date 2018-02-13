@@ -16,6 +16,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
     "react-tap-event-plugin": "^3.0.2",
     "simpl-schema": "^1.4.2",
     "watson-developer-cloud": "^3.0.6"

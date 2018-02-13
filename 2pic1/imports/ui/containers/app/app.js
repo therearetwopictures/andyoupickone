@@ -163,11 +163,16 @@ class App extends Component {
     ) : (
       <div>
         <Header />
-        <Picture
-          urlA={this.state.urlA}
-          urlB={this.state.urlB}
-          handleClick={this.handleClick.bind(this)}
-        />
+        <div className="picture-wrapper">
+          <Picture
+            url={this.state.urlA}
+            handleClick={this.handleClick.bind(this)}
+          />
+          <Picture
+            url={this.state.urlB}
+            handleClick={this.handleClick.bind(this)}
+          />
+        </div>
       </div>
     );
   }
