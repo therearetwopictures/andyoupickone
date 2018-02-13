@@ -5,6 +5,7 @@ import "../../../api/compMeta/compMeta";
 import "isomorphic-fetch";
 import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router-dom";
+import Loading from "../../components/loading/";
 
 import React, { Component } from "react";
 
@@ -156,7 +157,9 @@ class App extends Component {
 
   render() {
     return this.state.loading ? (
-      <div>loading...</div>
+      <div>
+        <Loading />
+      </div>
     ) : (
       <div>
         <Header />
