@@ -11,6 +11,9 @@ import {
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
 Meteor.methods({
+  "comparisons.getByCompId"(compId) {
+    return Comparisons.find(compId).fetch();
+  },
   "comparisons.getRandOne"(userId = null) {
     //Users.find(userID, { compId })[{}];
     const random = Comparisons.aggregate([{ $sample: { size: 1 } }]);
@@ -38,7 +41,7 @@ Meteor.methods({
           }
         }
       ]);
-      console.log(total);
+      // console.log(total);
       // if (total !== undefined || total[0].total === 0)
       //   Meteor.call("comparisons.addOne");
     })();
