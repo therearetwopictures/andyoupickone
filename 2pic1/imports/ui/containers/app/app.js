@@ -87,6 +87,7 @@ class App extends Component {
               resolve(res);
             })
             .catch(err => {
+              Meteor.call("comparisons.flagError", _id);
               this.addImageToQueue();
               reject(err);
             });
