@@ -137,10 +137,12 @@ class App extends Component {
         <div className="picture-wrapper">
           <Picture
             url={this.state.urlA}
+            pick="A"
             handleClick={this.handleClick.bind(this)}
           />
           <Picture
             url={this.state.urlB}
+            pick="B"
             handleClick={this.handleClick.bind(this)}
           />
         </div>

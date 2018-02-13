@@ -22,7 +22,7 @@ export default class picture extends Component {
           src={this.props.url}
           onClick={() => {
             this.updateSelectedStyle();
-            this.props.handleClick("A");
+            this.props.handleClick(this.props.pick);
           }}
         />
       </div>
