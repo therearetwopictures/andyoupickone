@@ -11,6 +11,9 @@ import {
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
 Meteor.methods({
+  "comparisons.getByCompId"(compId) {
+    return Comparisons.find(compId);
+  },
   "comparisons.getRandOne"(userId = null) {
     //Users.find(userID, { compId })[{}];
     const random = Comparisons.aggregate([{ $sample: { size: 1 } }]);
