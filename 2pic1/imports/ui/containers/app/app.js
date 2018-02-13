@@ -121,7 +121,19 @@ class App extends Component {
       .catch(e => {
         console.log(e);
         if (!this.imageQueue.length) {
-          //
+          let tryCount = 1;
+          const to = () =>
+            setTimeout(() => {
+              if (!this.imageQueue.length && tryCount < 11) {
+                to();
+                tryCount++;
+              } else {
+                const { urlA, urlB, _id } = this.imageQueue[0];
+                if (_id !== this.state._id)
+                  this.setState({ loading: false, urlA, urlB, _id });
+              }
+            }, 500);
+          to();
         } else {
           const { urlA, urlB, _id } = this.imageQueue[0];
           if (_id !== this.state._id)
