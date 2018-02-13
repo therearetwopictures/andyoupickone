@@ -39,8 +39,8 @@ Meteor.methods({
         }
       ]);
       console.log(total);
-      if (total !== undefined || total[0].total === 0)
-        Meteor.call("comparisons.addOne");
+      // if (total !== undefined || total[0].total === 0)
+      //   Meteor.call("comparisons.addOne");
     })();
     return random;
   },
