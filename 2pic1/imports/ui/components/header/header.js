@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import "./styles.css";
 
 export default class header extends Component {
   render() {
-    return <h1>Header</h1>;
+    return (
+      <div className="header">
+        <h3>.there.are.two.pictures.and.you.pick.one.</h3>
+      </div>
+    );
   }
 }
