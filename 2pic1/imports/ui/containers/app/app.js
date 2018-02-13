@@ -4,10 +4,11 @@ import "../../../api/comparisons/comparisons";
 import "../../../api/compMeta/compMeta";
 import "isomorphic-fetch";
 import { Meteor } from "meteor/meteor";
+import { withRouter } from "react-router-dom";
 
 import React, { Component } from "react";
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.imageQueue = [];
@@ -25,10 +26,12 @@ export default class App extends Component {
     console.log(this.imageQueue.length);
     Meteor.call("userData.updatePicks", this.state._id, pick);
     Meteor.call("compMeta.updatePicks", this.state._id, pick);
+
     try {
       this.addImageToQueue()
         .then(res => {
           const { urlA, urlB, _id } = this.imageQueue[0];
+          this.props.history.push(`/${this.state._id}`);
           if (_id !== this.state._id)
             this.setState({ loading: false, urlA, urlB, _id });
         })
@@ -173,3 +176,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withRouter(App);
