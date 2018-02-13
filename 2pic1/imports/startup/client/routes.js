@@ -28,7 +28,7 @@ export default Meteor.startup(() => {
             exact
             path="/:compId"
             render={({ match }) => (
-              <AppComponent compId={match.params.compId} />
+              <AppComponent compId={match.params.compId} stuff={history} />
             )}
           />
           <Route exact parth="/admin" component={AdminContainer} />

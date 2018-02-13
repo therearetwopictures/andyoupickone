@@ -36,6 +36,31 @@ Meteor.methods({
     }
     // console.log(this.userId);
   },
+  "userData.userHasPicked"(compId) {
+    const result = UserData.find(
+      {
+        _id: this.userId,
+        picks: {
+          $elemMatch: {
+            comparisonId: compId
+          }
+        }
+      },
+      { fields: { picks: 0, sessions: 0 } }
+    ).fetch();
+    return result.length;
+  },
+  "userData.getPicks"() {
+    const result = UserData.find(
+      {
+        _id: this.userId
+      },
+      { fields: { _id: 0, "picks.comparisonId": 1 } }
+    ).fetch();
+    //console.log(result);
+    if (!Object.keys(result[0]).length) return [];
+    return result[0].picks.map(pick => pick["comparisonId"]);
+  },
   "userData.updatePicks"(comparisonId, pick) {
     UserData.update(
       { _id: this.userId },

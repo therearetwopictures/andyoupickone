@@ -31,7 +31,7 @@ class App extends Component {
       this.addImageToQueue()
         .then(res => {
           const { urlA, urlB, _id } = this.imageQueue[0];
-          this.props.history.push(`/${this.state._id}`);
+
           if (_id !== this.state._id)
             this.setState({ loading: false, urlA, urlB, _id });
         })
@@ -45,6 +45,7 @@ class App extends Component {
       this.imageQueue.shift();
       const { urlA, urlB, _id } = this.imageQueue[0];
       this.setState({ loading: false, urlA, urlB, _id });
+      this.props.history.replace(`/${_id}`);
     } else {
       this.imageQueue.shift();
       this.setState({ loading: true });
@@ -54,7 +55,7 @@ class App extends Component {
     return new Promise((resolve, reject) => {
       Meteor.call(
         compId ? "comparisons.getByCompId" : "comparisons.getRandOne",
-        compId ? compId : null,
+        compId,
         (err, res) => {
           if (err) reject(err);
           if (compId && !res[0])
@@ -120,7 +121,21 @@ class App extends Component {
       })
       .catch(e => {
         console.log(e);
-        if (this.imageQueue.length) {
+        if (!this.imageQueue.length) {
+          let tryCount = 1;
+          const to = () =>
+            setTimeout(() => {
+              if (!this.imageQueue.length && tryCount < 11) {
+                to();
+                tryCount++;
+              } else {
+                const { urlA, urlB, _id } = this.imageQueue[0];
+                if (_id !== this.state._id)
+                  this.setState({ loading: false, urlA, urlB, _id });
+              }
+            }, 500);
+          to();
+        } else {
           const { urlA, urlB, _id } = this.imageQueue[0];
           if (_id !== this.state._id)
             this.setState({ loading: false, urlA, urlB, _id });
