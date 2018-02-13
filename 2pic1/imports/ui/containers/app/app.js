@@ -4,10 +4,12 @@ import "../../../api/comparisons/comparisons";
 import "../../../api/compMeta/compMeta";
 import "isomorphic-fetch";
 import { Meteor } from "meteor/meteor";
+import { withRouter } from "react-router-dom";
+import Loading from "../../components/loading/";
 
 import React, { Component } from "react";
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.imageQueue = [];
@@ -18,17 +20,17 @@ export default class App extends Component {
       _id: ""
     };
   }
-  upload() {
-    Meteor.call("comparisons.addOne");
-  }
+
   handleClick(pick) {
     console.log(this.imageQueue.length);
     Meteor.call("userData.updatePicks", this.state._id, pick);
     Meteor.call("compMeta.updatePicks", this.state._id, pick);
+
     try {
       this.addImageToQueue()
         .then(res => {
           const { urlA, urlB, _id } = this.imageQueue[0];
+          this.props.history.push(`/${this.state._id}`);
           if (_id !== this.state._id)
             this.setState({ loading: false, urlA, urlB, _id });
         })
@@ -109,6 +111,8 @@ export default class App extends Component {
     Promise.all(addProms)
       .then(res => {
         const { urlA, urlB, _id } = this.imageQueue[0];
+        this.props.history.replace(`/${_id}`);
+
         if (_id !== this.state._id)
           this.setState({ loading: false, urlA, urlB, _id });
       })
@@ -124,7 +128,9 @@ export default class App extends Component {
 
   render() {
     return this.state.loading ? (
-      <div>loading...</div>
+      <div>
+        <Loading />
+      </div>
     ) : (
       <div>
         <Header />
@@ -133,14 +139,9 @@ export default class App extends Component {
           urlB={this.state.urlB}
           handleClick={this.handleClick.bind(this)}
         />
-        <button
-          onClick={() => {
-            this.upload();
-          }}
-        >
-          upload
-        </button>
       </div>
     );
   }
 }
+
+export default withRouter(App);
