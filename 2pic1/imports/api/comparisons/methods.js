@@ -17,7 +17,7 @@ Meteor.methods({
   "comparisons.getByCompId"(compId) {
     return Comparisons.find(compId).fetch();
   },
-  "comparisons.getRandOne"(userId = null) {
+  "comparisons.getRandOne"() {
     //Users.find(userID, { compId })[{}];
     const random = Comparisons.aggregate([{ $sample: { size: 1 } }]);
     // if the total number of picks for this comparison is 0, then
