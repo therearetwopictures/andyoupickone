@@ -30,7 +30,7 @@ class App extends Component {
       this.addImageToQueue()
         .then(res => {
           const { urlA, urlB, _id } = this.imageQueue[0];
-          this.props.history.push(`/${this.state._id}`);
+
           if (_id !== this.state._id)
             this.setState({ loading: false, urlA, urlB, _id });
         })
@@ -44,84 +44,57 @@ class App extends Component {
       this.imageQueue.shift();
       const { urlA, urlB, _id } = this.imageQueue[0];
       this.setState({ loading: false, urlA, urlB, _id });
+      this.props.history.replace(`/${_id}`);
     } else {
       this.imageQueue.shift();
       this.setState({ loading: true });
     }
   }
   addImageToQueue(compId = null) {
-    return compId
-      ? new Promise((resolve, reject) => {
-          Meteor.call("comparisons.getByCompId", compId, (err, res) => {
-            if (err) reject(err);
-            if (!res[0]) reject(new Error("comparison in url not found"));
-            const { urlA, urlB, _id } = res[0];
-            const fetchA = new Promise((res, rej) => {
-              const imgA = new Image();
-              imgA.onload = () => {
-                res("resolved-A");
-              };
-              imgA.onerror = () => {
-                rej(new Error("rejected-A"));
-              };
-              imgA.src = urlA;
-            });
-            const fetchB = new Promise((res, rej) => {
-              const imgB = new Image();
-              imgB.onload = () => {
-                res("resolved-B");
-              };
-              imgB.onerror = () => {
-                rej(new Error("rejected-B"));
-              };
-              imgB.src = urlB;
-            });
-            Promise.all([fetchA, fetchB])
-              .then(res => {
-                this.imageQueue.unshift({ urlA, urlB, _id });
-                resolve(res);
-              })
-              .catch(err => {
-                this.addImageToQueue();
-                reject(err);
-              });
+    return new Promise((resolve, reject) => {
+      Meteor.call(
+        compId ? "comparisons.getByCompId" : "comparisons.getRandOne",
+        compId,
+        (err, res) => {
+          if (err) reject(err);
+          if (compId && !res[0])
+            reject(new Error("comparison in url not found"));
+          const { urlA, urlB, _id } = res[0];
+          const fetchA = new Promise((res, rej) => {
+            const imgA = new Image();
+            imgA.onload = () => {
+              res("resolved-A");
+            };
+            imgA.onerror = () => {
+              rej(new Error("rejected-A"));
+            };
+            imgA.src = urlA;
           });
-        })
-      : new Promise((resolve, reject) => {
-          Meteor.call("comparisons.getRandOne", (err, res) => {
-            if (err) reject(err);
-            const { urlA, urlB, _id } = res[0];
-            const fetchA = new Promise((res, rej) => {
-              const imgA = new Image();
-              imgA.onload = () => {
-                res("resolved-A");
-              };
-              imgA.onerror = () => {
-                rej(new Error("rejected-A"));
-              };
-              imgA.src = urlA;
-            });
-            const fetchB = new Promise((res, rej) => {
-              const imgB = new Image();
-              imgB.onload = () => {
-                res("resolved-B");
-              };
-              imgB.onerror = () => {
-                rej(new Error("rejected-B"));
-              };
-              imgB.src = urlB;
-            });
-            Promise.all([fetchA, fetchB])
-              .then(res => {
-                this.imageQueue.push({ urlA, urlB, _id });
-                resolve(res);
-              })
-              .catch(err => {
-                this.addImageToQueue();
-                reject(err);
-              });
+          const fetchB = new Promise((res, rej) => {
+            const imgB = new Image();
+            imgB.onload = () => {
+              res("resolved-B");
+            };
+            imgB.onerror = () => {
+              rej(new Error("rejected-B"));
+            };
+            imgB.src = urlB;
           });
-        });
+          Promise.all([fetchA, fetchB])
+            .then(res => {
+              compId
+                ? this.imageQueue.unshift({ urlA, urlB, _id })
+                : this.imageQueue.push({ urlA, urlB, _id });
+              resolve(res);
+            })
+            .catch(err => {
+              Meteor.call("comparisons.flagError", _id);
+              this.addImageToQueue();
+              reject(err);
+            });
+        }
+      );
+    });
   }
   componentDidMount() {
     const addProms = [];
@@ -147,7 +120,21 @@ class App extends Component {
       })
       .catch(e => {
         console.log(e);
-        if (this.imageQueue.length) {
+        if (!this.imageQueue.length) {
+          let tryCount = 1;
+          const to = () =>
+            setTimeout(() => {
+              if (!this.imageQueue.length && tryCount < 11) {
+                to();
+                tryCount++;
+              } else {
+                const { urlA, urlB, _id } = this.imageQueue[0];
+                if (_id !== this.state._id)
+                  this.setState({ loading: false, urlA, urlB, _id });
+              }
+            }, 500);
+          to();
+        } else {
           const { urlA, urlB, _id } = this.imageQueue[0];
           if (_id !== this.state._id)
             this.setState({ loading: false, urlA, urlB, _id });
@@ -163,11 +150,18 @@ class App extends Component {
     ) : (
       <div>
         <Header />
-        <Picture
-          urlA={this.state.urlA}
-          urlB={this.state.urlB}
-          handleClick={this.handleClick.bind(this)}
-        />
+        <div className="picture-wrapper">
+          <Picture
+            url={this.state.urlA}
+            pick="A"
+            handleClick={this.handleClick.bind(this)}
+          />
+          <Picture
+            url={this.state.urlB}
+            pick="B"
+            handleClick={this.handleClick.bind(this)}
+          />
+        </div>
       </div>
     );
   }

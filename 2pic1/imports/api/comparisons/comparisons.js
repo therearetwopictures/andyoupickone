@@ -10,6 +10,10 @@ const comparisonsSchema = new SimpleSchema({
   },
   urlB: {
     type: String
+  },
+  errorCount: {
+    type: Number,
+    optional: true
   }
 });
 Comparisons.attachSchema(comparisonsSchema);

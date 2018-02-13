@@ -12,6 +12,9 @@ import {
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 
 Meteor.methods({
+  "comparisons.flagError"(compId) {
+    Comparisons.update(compId, { $inc: { errorCount: 1 } });
+  },
   "comparisons.getByCompId"(compId) {
     //const hasSeen = Meteor.call("userData.userHasPicked", compId);
 
