@@ -28,7 +28,9 @@ export default class App extends Component {
     try {
       this.addImageToQueue()
         .then(res => {
-          this.setState({ loading: false });
+          const { urlA, urlB, _id } = this.imageQueue[0];
+          if (_id !== this.state._id)
+            this.setState({ loading: false, urlA, urlB, _id });
         })
         .catch(e => {
           console.log(e, "handleclick");
@@ -94,9 +96,17 @@ export default class App extends Component {
     Promise.all(addProms)
       .then(res => {
         const { urlA, urlB, _id } = this.imageQueue[0];
-        this.setState({ loading: false, urlA, urlB, _id });
+        if (_id !== this.state._id)
+          this.setState({ loading: false, urlA, urlB, _id });
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e);
+        if (this.imageQueue.length) {
+          const { urlA, urlB, _id } = this.imageQueue[0];
+          if (_id !== this.state._id)
+            this.setState({ loading: false, urlA, urlB, _id });
+        }
+      });
   }
 
   render() {
