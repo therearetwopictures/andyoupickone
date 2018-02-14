@@ -2,10 +2,11 @@ import { Dictionary } from "../dictionary/dictionary.js";
 import GoogleImages from "google-images";
 import "isomorphic-fetch";
 
-const imageSearch = new GoogleImages(
-  Meteor.settings.googleSearch[0].engineId,
-  Meteor.settings.googleSearch[0].apiKey
-);
+const google = num =>
+  new GoogleImages(
+    Meteor.settings.googleSearch[num].engineId,
+    Meteor.settings.googleSearch[num].apiKey
+  );
 export const searchWords = () =>
   Dictionary.find(
     { $or: [{ id: randNum() }, { id: randNum() }] },
@@ -16,6 +17,7 @@ export const searchWords = () =>
     .join(" ") + " imagesize:500x500";
 
 export const getUrl = async () => {
+  let imageSearch = google(Math.floor(Math.random() * 6));
   let url = undefined;
   let seedWords = undefined;
   let fileType = undefined;
@@ -25,7 +27,7 @@ export const getUrl = async () => {
     try {
       imageObj = await imageSearch.search(seedWords);
     } catch (e) {
-      console.log("switch the key!!~");
+      console.log(e.statusCode, "switch the key!!~");
     }
     if (imageObj[0]) {
       url = imageObj[Math.floor(Math.random() * imageObj.length)].url;
