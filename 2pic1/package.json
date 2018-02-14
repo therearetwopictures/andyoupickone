@@ -10,7 +10,6 @@
     "bcrypt": "^1.0.3",
     "download-file": "^0.1.5",
     "es6-promise": "^4.2.4",
-    "fast-crc32c": "^1.0.4",
     "google-cloud-storage-standalone": "^0.37.0",
     "google-images": "^2.1.0",
     "isomorphic-fetch": "^2.2.1",
