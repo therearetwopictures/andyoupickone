@@ -1,4 +1,4 @@
-// All links-related publications
+// All comparisons-related publications
 
 import { Meteor } from "meteor/meteor";
 import { Comparisons } from "../comparisons.js";

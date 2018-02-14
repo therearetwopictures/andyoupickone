@@ -1,8 +1,6 @@
 // Methods related to comparisons
-
 import { Meteor } from "meteor/meteor";
 import Comparisons from "./comparisons.js";
-import CompMeta from "../compMeta/compMeta";
 import UserData from "../userData/userData";
 import {
   downloadImage,
@@ -10,6 +8,8 @@ import {
   getUniqueImgNameFromSeed
 } from "../helpers/imageUtils.js";
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
+
+const watsonSettings = Meteor.settings.watson;
 
 Meteor.methods({
   "comparisons.flagError"(compId) {
@@ -22,7 +22,6 @@ Meteor.methods({
   },
   "comparisons.getRandOne"() {
     const picks = Meteor.call("userData.getPicks");
-    console.log("Picks: " + picks);
 
     let random = Comparisons.aggregate([
       { $match: { _id: { $not: { $in: [picks] } } } },
@@ -33,7 +32,7 @@ Meteor.methods({
     // it has not been seen and we need to generate another comparison
     // for the db
     (async () => {
-      total = CompMeta.aggregate([
+      total = Comparisons.aggregate([
         {
           $match: {
             $and: [
@@ -66,11 +65,11 @@ Meteor.methods({
 
     const compId = new Meteor.Collection.ObjectID()._str;
 
-    const awsUrlA = getUniqueImgNameFromSeed(compId, seedA, "A", fileTypeA);
-    const awsUrlB = getUniqueImgNameFromSeed(compId, seedB, "B", fileTypeB);
+    const gcsUrlA = getUniqueImgNameFromSeed(compId, seedA, "A", fileTypeA);
+    const gcsUrlB = getUniqueImgNameFromSeed(compId, seedB, "B", fileTypeB);
     try {
-      await downloadImage(urlA, awsUrlA);
-      await downloadImage(urlB, awsUrlB);
+      await downloadImage(urlA, gcsUrlA);
+      await downloadImage(urlB, gcsUrlB);
     } catch (e) {
       Meteor.call("comparisons.addOne");
       console.log(e, "hey, nice catch!!~");
@@ -80,16 +79,58 @@ Meteor.methods({
     console.log(getGCSUrl(awsUrlB));
     await Comparisons.insert({
       _id: compId,
-      urlA: getGCSUrl(awsUrlA),
-      urlB: getGCSUrl(awsUrlB)
+      urlA: getGCSUrl(gcsUrlA),
+      urlB: getGCSUrl(gcsUrlB)
     });
 
-    await CompMeta.insert({
+    await Comparisons.insert({
       _id: compId,
-      urlA: getGCSUrl(awsUrlA),
+      urlA: getGCSUrl(gcsUrlA),
       seedA,
-      urlB: getGCSUrl(awsUrlB),
+      urlB: getGCSUrl(gcsUrlB),
       seedB
+    });
+  },
+  "comparisons.updatePicks"(compId, pick) {
+    if (pick && compId) {
+      let update = {};
+      let inc = {};
+      inc[pick] = 1;
+      update = { $inc: inc };
+      Comparisons.update(
+        {
+          _id: compId
+        },
+        update
+      );
+    }
+  },
+  "comparisons.classifyImage"(compId, ...urls) {
+    urls.forEach((url, i) => {
+      let img = "";
+      i < 1 ? (img = "A") : (img = "B");
+
+      let defaultParameters = {
+        api_key: watsonSettings.api_key,
+        imageurl: url,
+        use_unauthenticated: false
+      };
+      classifyImage(defaultParameters)
+        .then(results => {
+          let tags = `tags${img}`;
+          console.log(tags);
+          // CompMeta.update({ _id: compId }, { $set });
+          results.images[0].classifiers[0].classes.forEach(tag => {
+            // console.log(tag);
+            Comparisons.update(
+              { _id: compId },
+              { $push: { [tags]: { class: tag.class, score: tag.score } } }
+            );
+          });
+
+          // console.log(JSON.stringify(results, null, 2));
+        })
+        .catch(error => console.log(error.message));
     });
   }
 });

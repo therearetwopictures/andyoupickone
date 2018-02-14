@@ -1,7 +1,6 @@
 import Header from "../../components/header/header.js";
 import Picture from "../../components/picture/picture.js";
 import "../../../api/comparisons/comparisons";
-import "../../../api/compMeta/compMeta";
 import "isomorphic-fetch";
 import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router-dom";
@@ -25,7 +24,7 @@ class App extends Component {
   handleClick(pick) {
     console.log(this.imageQueue.length);
     Meteor.call("userData.updatePicks", this.state._id, pick);
-    Meteor.call("compMeta.updatePicks", this.state._id, pick);
+    Meteor.call("comparisons.updatePicks", this.state._id, pick);
 
     try {
       this.addImageToQueue()
