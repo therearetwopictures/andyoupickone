@@ -22,5 +22,3 @@ export function classifyImage(params) {
     });
   });
 }
-
-export function batchClassifyImages() {}

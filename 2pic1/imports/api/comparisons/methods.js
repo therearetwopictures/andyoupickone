@@ -93,31 +93,62 @@ Meteor.methods({
     }
   },
   "comparisons.classifyImage"(compId, ...urls) {
-    urls.forEach((url, i) => {
-      let img = "";
-      i < 1 ? (img = "A") : (img = "B");
+    comps = Comparisons.find({ tagsA: null }, { limit: 5 }).fetch();
+    console.log(comps);
+    comps.forEach(comp => {
+      for (let i = 0; i < 2; i++) {
+        let img = "";
+        let url = "";
+        i < 1 ? (img = "A") : (img = "B");
+        i < 1 ? (url = comp.urlA) : (url = comp.urlB);
+        console.log("url:", url);
 
-      let defaultParameters = {
-        api_key: watsonSettings.api_key,
-        imageurl: url,
-        use_unauthenticated: false
-      };
-      classifyImage(defaultParameters)
-        .then(results => {
-          let tags = `tags${img}`;
-          console.log(tags);
-          // CompMeta.update({ _id: compId }, { $set });
-          results.images[0].classifiers[0].classes.forEach(tag => {
-            // console.log(tag);
-            Comparisons.update(
-              { _id: compId },
-              { $push: { [tags]: { class: tag.class, score: tag.score } } }
-            );
-          });
+        let defaultParameters = {
+          api_key: watsonSettings.api_key,
+          imageurl: url,
+          use_unauthenticated: false
+        };
 
-          // console.log(JSON.stringify(results, null, 2));
-        })
-        .catch(error => console.log(error.message));
+        // classifyImage(defaultParameters)
+        //   .then(results => {
+        //     let tags = `tags${img}`;
+        //     results.images[0].classifiers[0].classes.forEach(tag => {
+        //       Comparisons.update(
+        //         { _id: comp._id },
+        //         { $push: { [tags]: { class: tag.class, score: tag.score } } }
+        //       );
+        //     });
+
+        //     // console.log(JSON.stringify(results, null, 2));
+        //   })
+        //   .catch(error => console.log(error.message));
+      }
     });
+    // urls.forEach((url, i) => {
+    //   let img = "";
+    //   i < 1 ? (img = "A") : (img = "B");
+
+    //   let defaultParameters = {
+    //     api_key: watsonSettings.api_key,
+    //     imageurl: url,
+    //     use_unauthenticated: false
+    //   };
+    //   classifyImage(defaultParameters)
+    //     .then(results => {
+    //       let tags = `tags${img}`;
+    //       console.log(tags);
+    //       // CompMeta.update({ _id: compId }, { $set });
+    //       results.images[0].classifiers[0].classes.forEach(tag => {
+    //         // console.log(tag);
+    //         Comparisons.update(
+    //           { _id: compId },
+    //           { $push: { [tags]: { class: tag.class, score: tag.score } } }
+    //         );
+    //       });
+
+    //       // console.log(JSON.stringify(results, null, 2));
+    //     })
+    //     .catch(error => console.log(error.message));
+    // });
   }
 });
