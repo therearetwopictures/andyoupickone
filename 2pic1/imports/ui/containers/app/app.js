@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import Loading from "../../components/loading/";
 
 import React, { Component } from "react";
+import Route from "react-router-dom/Route";
 
 class App extends Component {
   constructor(props) {
@@ -150,6 +151,7 @@ class App extends Component {
     ) : (
       <div>
         <Header />
+
         <div className="picture-wrapper">
           <Picture
             url={this.state.urlA}

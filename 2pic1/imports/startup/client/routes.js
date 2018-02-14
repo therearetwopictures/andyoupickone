@@ -3,6 +3,7 @@ import { render } from "react-dom";
 //import Meteor from "meteor/meteor";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppComponent from "../../ui/containers/app/app.js";
+import AdminContainer from "../../ui/containers/AdminContainer";
 
 export default Meteor.startup(() => {
   AccountsAnonymous.login();
@@ -30,6 +31,7 @@ export default Meteor.startup(() => {
               <AppComponent compId={match.params.compId} stuff={history} />
             )}
           />
+          <Route exact parth="/admin" component={AdminContainer} />
         </Switch>
       </div>
     </Router>,
