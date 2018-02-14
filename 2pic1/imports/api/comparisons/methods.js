@@ -18,7 +18,16 @@ Meteor.methods({
   "comparisons.getByCompId"(compId) {
     //const hasSeen = Meteor.call("userData.userHasPicked", compId);
 
-    return Comparisons.find(compId).fetch();
+    const result = Comparisons.find(compId, {
+      field: {
+        A: 1,
+        B: 1,
+        urlB: 1,
+        urlA: 1
+      }
+    }).fetch();
+    if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
+    return result;
   },
   "comparisons.getRandOne"() {
     const picks = Meteor.call("userData.getPicks");
@@ -30,41 +39,17 @@ Meteor.methods({
     // ]);
     let random = Comparisons.aggregate([
       { $match: { _id: { $not: { $in: picks } } } },
-      { $sample: { size: 1 } }
-    ]);
-    // let random = Comparisons.find({ _id: { $not: { $in: picks } } }).fetch();
-
-    // random = [random[Math.floor(Math.random() * random.length)]];
-    // if the total number of picks for this comparison is 0, then
-    // it has not been seen and we need to generate another comparison
-
-    // for the db
-    (async () => {
-      total = Comparisons.aggregate([
-        {
-          $match: {
-            $and: [
-              {
-                _id: random[0]._id,
-                // TODO: delete on production? included as of now, since A, B is optional
-                A: { $ne: null },
-                B: { $ne: null }
-              }
-            ]
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            total: { $add: ["$A", "$B"] }
-          }
+      { $sample: { size: 1 } },
+      {
+        $project: {
+          A: 1,
+          B: 1,
+          urlB: 1,
+          urlA: 1
         }
-      ]);
-      console.log(total);
-      if (total !== undefined || total[0].total === 0)
-        Meteor.call("comparisons.addOne");
-    })();
-    console.log(random);
+      }
+    ]);
+    if (!random[0].A && !random[0].B) Meteor.call("comparisons.addOne");
     return random;
   },
   async "comparisons.addOne"() {
@@ -84,13 +69,6 @@ Meteor.methods({
       console.log(e, "hey, nice catch!!~");
       return;
     }
-    console.log(getGCSUrl(awsUrlA));
-    console.log(getGCSUrl(awsUrlB));
-    await Comparisons.insert({
-      _id: compId,
-      urlA: getGCSUrl(gcsUrlA),
-      urlB: getGCSUrl(gcsUrlB)
-    });
 
     await Comparisons.insert({
       _id: compId,

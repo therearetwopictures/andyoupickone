@@ -1,7 +1,11 @@
 import { Meteor } from "meteor/meteor";
 import React from "react";
 import { render } from "react-dom";
+<<<<<<< HEAD
 
+=======
+import { Meteor } from "meteor/meteor";
+>>>>>>> e577844567c884af50d9e53864d65da71b1bd24d
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppComponent from "../../ui/containers/app/app.js";
 import AdminContainer from "../../ui/containers/AdminContainer";
@@ -25,6 +29,7 @@ export default Meteor.startup(() => {
         <Switch>
           {" "}
           <Route exact path="/" component={AppComponent} />
+          <Route exact path="/admin" component={AdminContainer} />
           <Route
             exact
             path="/:compId"
@@ -32,7 +37,6 @@ export default Meteor.startup(() => {
               <AppComponent compId={match.params.compId} />
             )}
           />
-          <Route exact parth="/admin" component={AdminContainer} />
         </Switch>
       </div>
     </Router>,

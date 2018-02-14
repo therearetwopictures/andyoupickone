@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { watsonBatchClassifyImages } from "./helpers";
+import AccountsUIWrapper from "../../components/AccountsUIWrapper";
+import LeaderBoardContainer from "../LeaderBoardContainer/LeaderBoardContainer.js";
 
 export default class AdminContainer extends Component {
   constructor(props) {
@@ -19,6 +21,8 @@ export default class AdminContainer extends Component {
         >
           Generate Tags
         </button>
+        <LeaderBoardContainer />
+        <button>Generate Tags</button>
       </div>
     );
   }

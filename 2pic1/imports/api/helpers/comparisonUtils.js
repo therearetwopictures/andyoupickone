@@ -4,8 +4,8 @@ import "isomorphic-fetch";
 
 const google = num =>
   new GoogleImages(
-    Meteor.settings.googleSearch[num].engineId,
-    Meteor.settings.googleSearch[num].apiKey
+    Meteor.settings.googleSearch[1].engineId,
+    Meteor.settings.googleSearch[1].apiKey
   );
 export const searchWords = () =>
   Dictionary.find(
@@ -21,12 +21,15 @@ export const getUrl = async () => {
   let url = undefined;
   let seedWords = undefined;
   let fileType = undefined;
+  let apiKeyErrorCount = 0;
   while (!url) {
+    if (apiKeyErrorCount > 42) process.exit();
     seedWords = searchWords();
     let imageObj = [];
     try {
       imageObj = await imageSearch.search(seedWords);
     } catch (e) {
+      apiKeyErrorCount++;
       console.log(e.statusCode, "switch the key!!~");
     }
     if (imageObj[0]) {
