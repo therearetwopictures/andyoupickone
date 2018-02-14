@@ -25,3 +25,4 @@ brettle:accounts-anonymous
 react-meteor-data
 static-html
 meteorhacks:aggregate
+accounts-password
