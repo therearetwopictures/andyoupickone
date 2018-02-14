@@ -3,8 +3,8 @@ import GoogleImages from "google-images";
 import "isomorphic-fetch";
 
 const imageSearch = new GoogleImages(
-  Meteor.settings.googleSearch[2].engineId,
-  Meteor.settings.googleSearch[2].apiKey
+  Meteor.settings.googleSearch[4].engineId,
+  Meteor.settings.googleSearch[4].apiKey
 );
 export const searchWords = () =>
   Dictionary.find(

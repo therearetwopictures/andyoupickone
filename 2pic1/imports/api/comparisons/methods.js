@@ -24,7 +24,7 @@ Meteor.methods({
     const picks = Meteor.call("userData.getPicks");
 
     let random = Comparisons.aggregate([
-      { $match: { _id: { $not: { $in: [picks] } } } },
+      { $match: { _id: { $not: { $in: picks } } } },
       { $sample: { size: 1 } }
     ]);
 
