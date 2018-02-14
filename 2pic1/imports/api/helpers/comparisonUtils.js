@@ -4,8 +4,8 @@ import "isomorphic-fetch";
 
 const google = num =>
   new GoogleImages(
-    Meteor.settings.googleSearch[num].engineId,
-    Meteor.settings.googleSearch[num].apiKey
+    Meteor.settings.googleSearch[1].engineId,
+    Meteor.settings.googleSearch[1].apiKey
   );
 export const searchWords = () =>
   Dictionary.find(

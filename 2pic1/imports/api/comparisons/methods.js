@@ -84,8 +84,7 @@ Meteor.methods({
       console.log(e, "hey, nice catch!!~");
       return;
     }
-    console.log(getGCSUrl(awsUrlA));
-    console.log(getGCSUrl(awsUrlB));
+
     await Comparisons.insert({
       _id: compId,
       urlA: getGCSUrl(gcsUrlA),
