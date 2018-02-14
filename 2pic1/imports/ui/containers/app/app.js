@@ -61,38 +61,43 @@ class App extends Component {
           if (compId && !res[0])
             reject(new Error("comparison in url not found"));
           const { urlA, urlB, _id } = res[0];
-          const fetchA = new Promise((res, rej) => {
-            const imgA = new Image();
-            imgA.onload = () => {
-              res("resolved-A");
-            };
-            imgA.onerror = () => {
-              rej(new Error("rejected-A"));
-            };
-            imgA.src = urlA;
-          });
-          const fetchB = new Promise((res, rej) => {
-            const imgB = new Image();
-            imgB.onload = () => {
-              res("resolved-B");
-            };
-            imgB.onerror = () => {
-              rej(new Error("rejected-B"));
-            };
-            imgB.src = urlB;
-          });
-          Promise.all([fetchA, fetchB])
-            .then(res => {
-              compId
-                ? this.imageQueue.unshift({ urlA, urlB, _id })
-                : this.imageQueue.push({ urlA, urlB, _id });
-              resolve(res);
-            })
-            .catch(err => {
-              Meteor.call("comparisons.flagError", _id);
-              this.addImageToQueue();
-              reject(err);
+          if (this.imageQueue.map(obj => obj._id).includes(_id)) {
+            this.addImageToQueue();
+            reject(new Error("already in the queue"));
+          } else {
+            const fetchA = new Promise((res, rej) => {
+              const imgA = new Image();
+              imgA.onload = () => {
+                res("resolved-A");
+              };
+              imgA.onerror = () => {
+                rej(new Error("rejected-A"));
+              };
+              imgA.src = urlA;
             });
+            const fetchB = new Promise((res, rej) => {
+              const imgB = new Image();
+              imgB.onload = () => {
+                res("resolved-B");
+              };
+              imgB.onerror = () => {
+                rej(new Error("rejected-B"));
+              };
+              imgB.src = urlB;
+            });
+            Promise.all([fetchA, fetchB])
+              .then(res => {
+                compId
+                  ? this.imageQueue.unshift({ urlA, urlB, _id })
+                  : this.imageQueue.push({ urlA, urlB, _id });
+                resolve(res);
+              })
+              .catch(err => {
+                Meteor.call("comparisons.flagError", _id);
+                this.addImageToQueue();
+                reject(err);
+              });
+          }
         }
       );
     });

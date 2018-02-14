@@ -22,15 +22,22 @@ Meteor.methods({
   },
   "comparisons.getRandOne"() {
     const picks = Meteor.call("userData.getPicks");
-    console.log("Picks: " + picks);
+    // console.log("Picks: " + picks);
 
+    // let random = Comparisons.aggregate([
+    //   { $match: { _id: { $not: { $in: ["$_id", picks] } } } },
+    //   { $sample: { size: 1 } }
+    // ]);
     let random = Comparisons.aggregate([
-      { $match: { _id: { $not: { $in: [picks] } } } },
+      { $match: { _id: { $not: { $in: picks } } } },
       { $sample: { size: 1 } }
     ]);
+    // let random = Comparisons.find({ _id: { $not: { $in: picks } } }).fetch();
 
+    // random = [random[Math.floor(Math.random() * random.length)]];
     // if the total number of picks for this comparison is 0, then
     // it has not been seen and we need to generate another comparison
+
     // for the db
     (async () => {
       total = CompMeta.aggregate([
@@ -53,10 +60,11 @@ Meteor.methods({
           }
         }
       ]);
-      // console.log(total);
-      // if (total !== undefined || total[0].total === 0)
-      //   Meteor.call("comparisons.addOne");
+      console.log(total);
+      if (total !== undefined || total[0].total === 0)
+        Meteor.call("comparisons.addOne");
     })();
+    console.log(random);
     return random;
   },
   async "comparisons.addOne"() {
