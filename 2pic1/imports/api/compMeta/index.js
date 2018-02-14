@@ -1,2 +1,0 @@
-import "./compMeta";
-import "./methods";

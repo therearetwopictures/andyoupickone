@@ -1,2 +1,1 @@
 import "./users";
-import "./methods";
