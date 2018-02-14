@@ -14,7 +14,7 @@ export default class AdminContainer extends Component {
         <button
           onClick={e => {
             e.preventDefault();
-            watsonBatchClassifyImages();
+            // watsonBatchClassifyImages();
           }}
         >
           Generate Tags
