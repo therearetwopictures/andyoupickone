@@ -6,8 +6,13 @@ import Users from "../../api/users/";
 
 Meteor.startup(() => {
   Accounts.onCreateUser((options, user) => {
-    const adminUser = Object.assign({ role: "admin" }, user);
-    return adminUser;
+    console.log(user);
+    if (user.emails) {
+      const adminUser = Object.assign({ role: "admin" }, user);
+      return adminUser;
+    } else {
+      return user;
+    }
   });
   if (Meteor.users.find({ role: "admin" }).count() === 0) {
     Accounts.createUser({
