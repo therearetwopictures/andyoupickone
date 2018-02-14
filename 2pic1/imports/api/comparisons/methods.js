@@ -24,24 +24,10 @@ Meteor.methods({
     const picks = Meteor.call("userData.getPicks");
     console.log("Picks: " + picks);
 
-    // let random = Comparisons.find({ _id: { $nin: [picks] } }).aggregate([
-    //   { $sample: { size: 1 } }
-    // ]);
-    let query = { _id: { $not: { $in: picks } } };
-    let comps = Comparisons.find().count();
-    console.log("comps:", comps);
-    let n = Comparisons.find(query).count();
-    console.log("n:", n);
-    let r = Math.floor(Math.random() * n);
-    let random = Comparisons.find(query, { skip: r, limit: 1 }).fetch();
-
-    console.log(random);
-    // let compId = random[0]._id;
-    // while (Meteor.call("userData.userHasPicked", compId)) {
-    //   console.log("has seen");
-    //   random = Comparisons.aggregate([{ $sample: { size: 1 } }]);
-    //   compId = random[0]._id
-    // }
+    let random = Comparisons.aggregate([
+      { $match: { _id: { $not: { $in: picks } } } },
+      { $sample: { size: 1 } }
+    ]);
 
     // if the total number of picks for this comparison is 0, then
     // it has not been seen and we need to generate another comparison
