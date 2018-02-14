@@ -1,5 +1,3 @@
-import Comparisons from "./comparisons.js";
-
 export function classifyImage(params) {
   return new Promise((resolve, reject) => {
     const VisualRecognitionV3 = require("watson-developer-cloud/visual-recognition/v3");

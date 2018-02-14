@@ -16,7 +16,7 @@ export default class AdminContainer extends Component {
         <button
           onClick={e => {
             e.preventDefault();
-            // watsonBatchClassifyImages();
+            Meteor.call("comparisons.classifyImage");
           }}
         >
           Generate Tags
