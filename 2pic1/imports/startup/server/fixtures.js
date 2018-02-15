@@ -2,7 +2,6 @@
 
 import { Meteor } from "meteor/meteor";
 import Comparisons from "../../api/comparisons/comparisons.js";
-import Users from "../../api/users/";
 
 Meteor.startup(() => {
   Accounts.onCreateUser((options, user) => {
