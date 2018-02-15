@@ -27,6 +27,7 @@ Meteor.methods({
         urlA: 1
       }
     }).fetch();
+
     // if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
     return result;
   },
