@@ -27,7 +27,7 @@ Meteor.methods({
         urlA: 1
       }
     }).fetch();
-    if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
+    //  if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
     return result;
   },
   "comparisons.getRandOne"() {
@@ -50,7 +50,7 @@ Meteor.methods({
         }
       }
     ]);
-    if (!random[0].A && !random[0].B) Meteor.call("comparisons.addOne");
+    //if (!random[0].A && !random[0].B) Meteor.call("comparisons.addOne");
     return random;
   },
   async "comparisons.addOne"() {
@@ -91,6 +91,35 @@ Meteor.methods({
         },
         update
       );
+    }
+  },
+  //
+  // @returns an array of results:
+  // - empty in the case of no picks made in the db
+  // - array with both results in the case where highest picks are equal
+  // - array of one result of either A or B
+  "comparisons.getMostPopularImage"() {
+    let query = { A: { $ne: null } };
+    let options = { fields: { A: 1, urlA: 1 }, sort: { A: -1 }, limit: 1 };
+    const getMostPopularImageA = Comparisons.find(query, options).fetch();
+
+    query = { B: { $ne: null } };
+    options = { fields: { B: 1, urlB: 1 }, sort: { B: -1 }, limit: 1 };
+    const getMostPopularImageB = Comparisons.find(query, options).fetch();
+
+    // Rare edge case where nothing has been picked in the db at all
+    if (
+      getMostPopularImageA[0].A === null &&
+      getMostPopularImageB[0].B === null
+    )
+      return [];
+    else if (getMostPopularImageA[0].A === getMostPopularImageB[0].B)
+      // Case where highest A and B are equal
+      return [getMostPopularImageA[0], getMostPopularImageB[0]];
+    else {
+      return getMostPopularImageA[0].A > getMostPopularImageB[0].B
+        ? getMostPopularImageA
+        : getMostPopularImageB;
     }
   },
   "comparisons.classifyImage"(compId, ...urls) {
