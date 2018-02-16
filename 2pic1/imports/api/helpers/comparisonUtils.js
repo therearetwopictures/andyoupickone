@@ -3,8 +3,8 @@ import GoogleImages from "google-images";
 import "isomorphic-fetch";
 
 const imageSearch = new GoogleImages(
-  Meteor.settings.googleSearch[9].engineId,
-  Meteor.settings.googleSearch[9].apiKey
+  Meteor.settings.googleSearch[7].engineId,
+  Meteor.settings.googleSearch[7].apiKey
 );
 export const searchWords = () =>
   Dictionary.find(
@@ -27,6 +27,7 @@ export const getUrl = async () => {
       }, 1500);
     });
     seedWords = searchWords();
+    console.log(seedWords);
     let imageObj = [];
     try {
       imageObj = await imageSearch.search(seedWords + " imagesize:500x500");

@@ -3,4 +3,4 @@ import { render } from "react-dom";
 import React from "react";
 import route from "../imports/startup/client/routes.js";
 //
-Meteor.call("comparisons.addOne");
+// Meteor.call("comparisons.addOne");

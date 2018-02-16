@@ -105,7 +105,7 @@ Meteor.methods({
         console.log("url:", url);
 
         let defaultParameters = {
-          api_key: watsonSettings.api_key,
+          api_key: watsonSettings.api_key2,
           imageurl: url,
           use_unauthenticated: false
         };
@@ -119,8 +119,6 @@ Meteor.methods({
                 { $push: { [tags]: { class: tag.class, score: tag.score } } }
               );
             });
-
-            // console.log(JSON.stringify(results, null, 2));
           })
           .catch(error => console.log(error.message));
       }
