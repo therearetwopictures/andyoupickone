@@ -1,12 +1,11 @@
 import { Dictionary } from "../dictionary/dictionary.js";
 import GoogleImages from "google-images";
-import grab from "node-fetch";
+import "isomorphic-fetch";
 
-const google = num =>
-  new GoogleImages(
-    Meteor.settings.googleSearch[num].engineId,
-    Meteor.settings.googleSearch[num].apiKey
-  );
+const imageSearch = new GoogleImages(
+  Meteor.settings.googleSearch[9].engineId,
+  Meteor.settings.googleSearch[9].apiKey
+);
 export const searchWords = () =>
   Dictionary.find(
     { $or: [{ id: randNum() }, { id: randNum() }] },
@@ -16,18 +15,18 @@ export const searchWords = () =>
     .map(obj => obj.word)
     .join(" ");
 
-export const getUrl = () => {
-  let imageSearch = google(9);
+export const getUrl = async () => {
   let url = undefined;
   let seedWords = undefined;
   let fileType = undefined;
-  let apiKeyErrorCount = 0;
+  while (!url) {
+    console.log("loop");
+    await new Promise((resolve, resject) => {
       setTimeout(() => {
         resolve();
       }, 1500);
-    
+    });
     seedWords = searchWords();
-    // console.log(seedWords);
     let imageObj = [];
     try {
       imageObj = await imageSearch.search(seedWords + " imagesize:500x500");
@@ -67,7 +66,7 @@ export const getUrl = () => {
       url = undefined;
     }
     //flag words here
-  
+  }
   return [url, seedWords, fileType];
 };
 
