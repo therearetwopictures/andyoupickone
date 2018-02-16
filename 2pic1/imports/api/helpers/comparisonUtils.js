@@ -2,11 +2,10 @@ import { Dictionary } from "../dictionary/dictionary.js";
 import GoogleImages from "google-images";
 import "isomorphic-fetch";
 
-const google = num =>
-  new GoogleImages(
-    Meteor.settings.googleSearch[1].engineId,
-    Meteor.settings.googleSearch[1].apiKey
-  );
+const imageSearch = new GoogleImages(
+  Meteor.settings.googleSearch[9].engineId,
+  Meteor.settings.googleSearch[9].apiKey
+);
 export const searchWords = () =>
   Dictionary.find(
     { $or: [{ id: randNum() }, { id: randNum() }] },
@@ -14,41 +13,61 @@ export const searchWords = () =>
   )
     .fetch()
     .map(obj => obj.word)
-    .join(" ") + " imagesize:500x500";
+    .join(" ");
 
 export const getUrl = async () => {
-  let imageSearch = google(Math.floor(Math.random() * 6));
   let url = undefined;
   let seedWords = undefined;
   let fileType = undefined;
-  let apiKeyErrorCount = 0;
   while (!url) {
-    if (apiKeyErrorCount > 42) process.exit();
+    console.log("loop");
+    await new Promise((resolve, resject) => {
+      setTimeout(() => {
+        resolve();
+      }, 1500);
+    });
     seedWords = searchWords();
     let imageObj = [];
     try {
-      imageObj = await imageSearch.search(seedWords);
+      imageObj = await imageSearch.search(seedWords + " imagesize:500x500");
     } catch (e) {
-      apiKeyErrorCount++;
       console.log(e.statusCode, "switch the key!!~");
     }
-    if (imageObj[0]) {
-      url = imageObj[Math.floor(Math.random() * imageObj.length)].url;
+    // if (!imageObj[0]) {
+    //   flag words here
+    // }
+    // let flagWord = true;
+    while (imageObj[0]) {
+      let currentIndex = Math.floor(Math.random() * imageObj.length);
+      let breakVar = false;
+      console.log("imageloop on ", seedWords);
+      url = imageObj[currentIndex].url;
       /\.jpg|\.png|\.jpeg/.test(url)
         ? await fetch(url)
             .then(res => {
               if (!/^image/.test(res.headers.get("content-type")))
                 throw new Error("not actually an image.. c'mon google!");
               fileType = res.headers.get("content-type").split("/")[1];
+              // flagWord = false;
+              breakVar = true;
             })
             .catch(e => {
               console.log(e.message);
-              url = undefined;
+              imageObj = imageObj.reduce(
+                (acc, val, i) => (i === currentIndex ? acc : acc.concat(val)),
+                []
+              );
             })
-        : (url = undefined);
+        : (imageObj = imageObj.reduce(
+            (acc, val, i) => (i === currentIndex ? acc : acc.concat(val)),
+            []
+          ));
+      if (breakVar) break;
+      url = undefined;
     }
+    //flag words here
   }
-  return [url, seedWords.slice(0, -18), fileType];
+  return [url, seedWords, fileType];
 };
 
 export const randNum = () => Math.floor(Math.random() * 143090).toString();

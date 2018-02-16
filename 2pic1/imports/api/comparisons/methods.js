@@ -27,7 +27,7 @@ Meteor.methods({
         urlA: 1
       }
     }).fetch();
-    // if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
+    if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
     return result;
   },
   "comparisons.getRandOne"() {
@@ -50,7 +50,7 @@ Meteor.methods({
         }
       }
     ]);
-    // if (!random[0].A && !random[0].B) Meteor.call("comparisons.addOne");
+    if (!random[0].A && !random[0].B) Meteor.call("comparisons.addOne");
     return random;
   },
   async "comparisons.addOne"() {
