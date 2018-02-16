@@ -25,6 +25,7 @@ class App extends Component {
     console.log(this.imageQueue.length);
     Meteor.call("userData.updatePicks", this.state._id, pick);
     Meteor.call("comparisons.updatePicks", this.state._id, pick);
+    Meteor.call("comparisons.addOne");
 
     try {
       this.addImageToQueue()
