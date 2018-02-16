@@ -15,7 +15,7 @@ Meteor.startup(() => {
   });
   if (Meteor.users.find({ role: "admin" }).count() === 0) {
     Accounts.createUser({
-      email: "scottdlivingstone@gmail.com",
+      email: "testy@gmail.com",
       password: "password"
     });
   }

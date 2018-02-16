@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { watsonBatchClassifyImages } from "./helpers";
 import AccountsUIWrapper from "../../components/AccountsUIWrapper";
+import { Accounts } from "meteor/accounts-base";
 import { LoginBox } from "meteor/universe:accounts-ui";
 import { withTracker } from "meteor/react-meteor-data";
 import LeaderBoardContainer from "../LeaderBoardContainer/LeaderBoardContainer.js";
@@ -9,6 +10,10 @@ import LeaderBoardContainer from "../LeaderBoardContainer/LeaderBoardContainer.j
 class AdminContainer extends Component {
   constructor(props) {
     super(props);
+    state: {
+      newAdminEmail: "";
+      password: "";
+    }
   }
 
   render() {
@@ -31,6 +36,33 @@ class AdminContainer extends Component {
             >
               Generate Tags
             </button>
+            <form>
+              <input
+                placeholder="Email"
+                type="email"
+                onChange={e => {
+                  this.setState({ newAdminEmail: e.target.value });
+                }}
+              />
+              <input
+                placeholder="Password"
+                type="password"
+                onChange={e => {
+                  this.setState({ password: e.target.value });
+                }}
+              />
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  let newAdmin = Accounts.createUser({
+                    email: this.state.newAdminEmail,
+                    password: this.state.password
+                  });
+                }}
+              >
+                New Admin User
+              </button>
+            </form>
             <LeaderBoardContainer />
             <button>Generate Tags</button>
           </div>
