@@ -7,7 +7,8 @@ import {
   getGCSUrl,
   getUniqueImgNameFromSeed
 } from "../helpers/imageUtils.js";
-import { createLeastOrMostPopular } from "../helpers/queryCreator";
+import { createLeastOrMostPopular } from "../helpers/queryCreators";
+
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 import { classifyImage } from "./watsonHelpers/watson";
 
