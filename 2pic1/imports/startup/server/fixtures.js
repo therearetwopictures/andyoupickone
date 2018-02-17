@@ -2,7 +2,6 @@
 
 import { Meteor } from "meteor/meteor";
 import Comparisons from "../../api/comparisons/comparisons.js";
-import Users from "../../api/users/";
 
 Meteor.startup(() => {
   Accounts.onCreateUser((options, user) => {
@@ -16,7 +15,7 @@ Meteor.startup(() => {
   });
   if (Meteor.users.find({ role: "admin" }).count() === 0) {
     Accounts.createUser({
-      email: "scottdlivingstone@gmail.com",
+      email: "testy@gmail.com",
       password: "password"
     });
   }

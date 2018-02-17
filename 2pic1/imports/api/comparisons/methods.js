@@ -8,6 +8,8 @@ import {
   getUniqueImgNameFromSeed,
   error403
 } from "../helpers/imageUtils.js";
+import { createLeastOrMostPopular } from "../helpers/queryCreators";
+
 import { randNum, searchWords, getUrl } from "../helpers/comparisonUtils";
 import { classifyImage } from "./watsonHelpers/watson";
 
@@ -45,7 +47,6 @@ Meteor.methods({
         }
       }
     ]);
-
     return random;
   },
   async "comparisons.addOne"() {
@@ -87,6 +88,100 @@ Meteor.methods({
       );
     }
   },
+  // @returns an array of results:
+  // - empty in the case no picks have been made in the db
+  // - array of one or more results (limited to 5)
+  // nb: excludes results that have an even match of 0
+  "comparisons.getEvenComparison"() {
+    let query = Comparisons.aggregate([
+      {
+        $group: {
+          _id: { urlA: "$urlA", urlB: "$urlB", A: "$A", B: "$B" }
+        }
+      },
+      {
+        $project: {
+          totalAB: { $eq: ["$_id.A", "$_id.B"] },
+          sumAB: { $sum: ["$_id.A", "$_id.B"] }
+        }
+      },
+      { $sort: { totalAB: -1 } },
+      { $match: { $and: [{ totalAB: { $eq: true } }, { sumAB: { $ne: 0 } }] } },
+      { $project: { totalAB: 0, sumAB: 0 } },
+      { limit: 5 }
+    ]);
+    return query;
+  },
+  // @returns an array of results:
+  // - empty in the case no picks have been made in the db
+  // - array of one result (the first one if there are multiples w/same)
+  // limited to 5, if multiples exist
+  "comparisons.getMostPopularComparison"() {
+    let query = Comparisons.aggregate([
+      {
+        $group: {
+          _id: { urlA: "$urlA", urlB: "$urlB", A: "$A", B: "$B" }
+        }
+      },
+      { $project: { totalAB: { $sum: ["$_id.A", "$_id.B"] } } },
+      { $sort: { totalAB: -1 } },
+      { $limit: 5 }
+    ]);
+    return query;
+  },
+  // @returns an array or results:
+  // - empty in the case no picks have been made in the db
+  // - array with both results in the case where the lowest picks are equal
+  // - array of one result
+  "comparisons.getLeastPopularImage"() {
+    let query = createLeastOrMostPopular("A", 1);
+    const getLeastPopularImageA = Comparisons.find(query[0], query[1]).fetch();
+
+    query = createLeastOrMostPopular("B", 1);
+    const getLeastPopularImageB = Comparisons.find(query[0], query[1]).fetch();
+
+    // Rare edge case where nothing has been picked in the db at all
+    if (
+      getLeastPopularImageA[0].A === null &&
+      getLeastPopularImageB[0].B === null
+    )
+      return [];
+    else if (getLeastPopularImageA[0].A === getLeastPopularImageB[0].B)
+      // Case where highest A and B are equal
+      return [getLeastPopularImageA[0], getLeastPopularImageB[0]];
+    else {
+      return getLeastPopularImageA[0].A > getLeastPopularImageB[0].B
+        ? getLeastPopularImageA
+        : getLeastPopularImageB;
+    }
+  },
+  //
+  // @returns an array of results:
+  // - empty in the case of no picks made in the db
+  // - array with both results in the case where highest picks are equal
+  // - array of one result of either A or B
+  "comparisons.getMostPopularImage"() {
+    let query = createLeastOrMostPopular("A", -1);
+    const getMostPopularImageA = Comparisons.find(query[0], query[1]).fetch();
+
+    query = createLeastOrMostPopular("B", -1);
+    const getMostPopularImageB = Comparisons.find(query[0], query[1]).fetch();
+
+    // Rare edge case where nothing has been picked in the db at all
+    if (
+      getMostPopularImageA[0].A === null &&
+      getMostPopularImageB[0].B === null
+    )
+      return [];
+    else if (getMostPopularImageA[0].A === getMostPopularImageB[0].B)
+      // Case where highest A and B are equal
+      return [getMostPopularImageA[0], getMostPopularImageB[0]];
+    else {
+      return getMostPopularImageA[0].A > getMostPopularImageB[0].B
+        ? getMostPopularImageA
+        : getMostPopularImageB;
+    }
+  },
   "comparisons.classifyImage"(compId, ...urls) {
     comps = Comparisons.find({ tagsA: null }, { limit: 2 }).fetch();
     console.log(comps);
@@ -99,7 +194,7 @@ Meteor.methods({
         console.log("url:", url);
 
         let defaultParameters = {
-          api_key: watsonSettings.api_key,
+          api_key: watsonSettings.api_key2,
           imageurl: url,
           use_unauthenticated: false
         };
@@ -113,8 +208,6 @@ Meteor.methods({
                 { $push: { [tags]: { class: tag.class, score: tag.score } } }
               );
             });
-
-            // console.log(JSON.stringify(results, null, 2));
           })
           .catch(error => console.log(error.message));
       }

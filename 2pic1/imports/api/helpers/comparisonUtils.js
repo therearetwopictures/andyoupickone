@@ -24,6 +24,7 @@ export const getUrl = async () => {
   while (!url) {
     console.log("request");
     seedWords = searchWords();
+    console.log(seedWords);
     let imageObj = [];
     try {
       imageObj = await imageSearch().search(seedWords + " imagesize:500x500");

@@ -27,3 +27,4 @@ static-html
 meteorhacks:aggregate
 accounts-password
 d3js:d3
+universe:accounts-ui
