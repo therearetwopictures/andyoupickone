@@ -28,7 +28,7 @@ class AdminContainer extends Component {
         </div>
         {isAdmin ? (
           <div className="watson-functions-container">
-            <h1>HELLLLLLO</h1>
+            <h1>Administration Station</h1>
             <button
               onClick={e => {
                 e.preventDefault();
@@ -37,6 +37,7 @@ class AdminContainer extends Component {
             >
               Generate Tags
             </button>
+            <h2>Create up new admin</h2>
             <form>
               <input
                 placeholder="Email"
@@ -59,17 +60,17 @@ class AdminContainer extends Component {
                     email: this.state.newAdminEmail,
                     password: this.state.password
                   });
+                  Accounts.sendVerificationEmail(newAdmin);
                 }}
               >
                 New Admin User
               </button>
             </form>
-            <LeaderBoardContainer />
-            <button>Generate Tags</button>
+            <button>Change Password</button>
           </div>
         ) : (
           <div>
-            <p>Log in ya goober</p>
+            <p>Log in as an Admin ya goober</p>
           </div>
         )}
       </div>

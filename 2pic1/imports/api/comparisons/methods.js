@@ -122,8 +122,10 @@ Meteor.methods({
         : getMostPopularImageB;
     }
   },
-  "comparisons.classifyImage"(compId, ...urls) {
-    comps = Comparisons.find({ tagsA: null }, { limit: 2 }).fetch();
+  // Generate image tags. No arguments, makes database query inside function
+  // Function returns undefined as it is solely for updating database
+  "comparisons.classifyImage"() {
+    comps = Comparisons.find({ tagsA: null }, { limit: 30 }).fetch();
     console.log(comps);
     comps.forEach(comp => {
       for (let i = 0; i < 2; i++) {
@@ -134,7 +136,7 @@ Meteor.methods({
         console.log("url:", url);
 
         let defaultParameters = {
-          api_key: watsonSettings.api_key2,
+          api_key: watsonSettings.api_key,
           imageurl: url,
           use_unauthenticated: false
         };
