@@ -5,7 +5,8 @@ import UserData from "../userData/userData";
 import {
   downloadImage,
   getGCSUrl,
-  getUniqueImgNameFromSeed
+  getUniqueImgNameFromSeed,
+  error403
 } from "../helpers/imageUtils.js";
 import { createLeastOrMostPopular } from "../helpers/queryCreators";
 
@@ -19,7 +20,7 @@ Meteor.methods({
     Comparisons.update(compId, { $inc: { errorCount: 1 } });
   },
   "comparisons.getByCompId"(compId) {
-    //const hasSeen = Meteor.call("userData.userHasPicked", compId);
+    const hasSeen = Meteor.call("userData.userHasPicked", compId);
 
     const result = Comparisons.find(compId, {
       field: {
@@ -29,17 +30,11 @@ Meteor.methods({
         urlA: 1
       }
     }).fetch();
-    //  if (!result[0].A && !result[0].B) Meteor.call("comparisons.addOne");
+    result[0].hasSeen = hasSeen;
     return result;
   },
   "comparisons.getRandOne"() {
     const picks = Meteor.call("userData.getPicks");
-    // console.log("Picks: " + picks);
-
-    // let random = Comparisons.aggregate([
-    //   { $match: { _id: { $not: { $in: ["$_id", picks] } } } },
-    //   { $sample: { size: 1 } }
-    // ]);
     let random = Comparisons.aggregate([
       { $match: { _id: { $not: { $in: picks } } } },
       { $sample: { size: 1 } },
@@ -52,13 +47,11 @@ Meteor.methods({
         }
       }
     ]);
-    //if (!random[0].A && !random[0].B) Meteor.call("comparisons.addOne");
     return random;
   },
   async "comparisons.addOne"() {
     const [urlA, seedA, fileTypeA] = await getUrl();
     const [urlB, seedB, fileTypeB] = await getUrl();
-    // console.log(seedA);
 
     const compId = new Meteor.Collection.ObjectID()._str;
 
@@ -68,7 +61,7 @@ Meteor.methods({
       await downloadImage(urlA, gcsUrlA);
       await downloadImage(urlB, gcsUrlB);
     } catch (e) {
-      Meteor.call("comparisons.addOne");
+      if (!error403) Meteor.call("comparisons.addOne");
       console.log(e, "hey, nice catch!!~");
       return;
     }

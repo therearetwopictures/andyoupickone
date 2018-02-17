@@ -5,27 +5,40 @@ import "isomorphic-fetch";
 import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router-dom";
 import Loading from "../../components/loading/";
-
 import React, { Component } from "react";
+import Sound from "react-sound";
 import Route from "react-router-dom/Route";
+soundManager.setup({ debugMode: false });
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.imageQueue = [];
+    this.bodyEl = document.getElementById("body");
     this.state = {
       loading: true,
       urlA: "",
       urlB: "",
-      _id: ""
+      _id: "",
+      hasSeen: null,
+      leaderMp3: false
     };
   }
 
   handleClick(pick) {
-    console.log(this.imageQueue.length);
-    Meteor.call("userData.updatePicks", this.state._id, pick);
-    Meteor.call("comparisons.updatePicks", this.state._id, pick);
-    Meteor.call("comparisons.addOne");
+    if (this.state.hasSeen) {
+      if (
+        (pick === "A" && this.state.hasSeen === "B") ||
+        (pick === "B" && this.state.hasSeen === "A")
+      ) {
+        alert(
+          "This is 2pic1, not 2pic2. \nLet this be a lesson, you can change your mind.. \nbut not your past."
+        );
+      }
+    } else {
+      Meteor.call("userData.updatePicks", this.state._id, pick);
+      Meteor.call("comparisons.updatePicks", this.state._id, pick);
+    }
 
     try {
       this.addImageToQueue()
@@ -33,7 +46,7 @@ class App extends Component {
           const { urlA, urlB, _id } = this.imageQueue[0];
 
           if (_id !== this.state._id)
-            this.setState({ loading: false, urlA, urlB, _id });
+            this.setState({ loading: false, urlA, urlB, _id, hasSeen: null });
         })
         .catch(e => {
           console.log(e, "handleclick");
@@ -44,12 +57,30 @@ class App extends Component {
     if (this.imageQueue.length > 1) {
       this.imageQueue.shift();
       const { urlA, urlB, _id } = this.imageQueue[0];
-      this.setState({ loading: false, urlA, urlB, _id });
+      this.setState({ loading: false, urlA, urlB, _id, hasSeen: null });
       this.props.history.replace(`/${_id}`);
     } else {
       this.imageQueue.shift();
-      this.setState({ loading: true });
+      this.setState({ loading: true, hasSeen: null });
     }
+    Meteor.call("userData.getLeader", (err, res) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (res[0].isLeader) {
+        Meteor.call("comparisons.addOne");
+        console.log("leader of the pack!");
+        if (!this.state.leaderMp3) {
+          this.setState({ leaderMp3: true });
+          this.bodyEl.setAttribute("class", "leaderOfThePack");
+        }
+      } else {
+        this.setState({ leaderMp3: false });
+      }
+    });
+
+    // if (Meteor.call(""))
   }
   addImageToQueue(compId = null) {
     return new Promise((resolve, reject) => {
@@ -60,7 +91,7 @@ class App extends Component {
           if (err) reject(err);
           if (compId && !res[0])
             reject(new Error("comparison in url not found"));
-          const { urlA, urlB, _id } = res[0];
+          const { urlA, urlB, _id, hasSeen } = res[0];
           if (this.imageQueue.map(obj => obj._id).includes(_id)) {
             this.addImageToQueue();
             reject(new Error("already in the queue"));
@@ -88,7 +119,7 @@ class App extends Component {
             Promise.all([fetchA, fetchB])
               .then(res => {
                 compId
-                  ? this.imageQueue.unshift({ urlA, urlB, _id })
+                  ? this.imageQueue.unshift({ urlA, urlB, _id, hasSeen })
                   : this.imageQueue.push({ urlA, urlB, _id });
                 resolve(res);
               })
@@ -118,11 +149,11 @@ class App extends Component {
     }
     Promise.all(addProms)
       .then(res => {
-        const { urlA, urlB, _id } = this.imageQueue[0];
+        const { urlA, urlB, _id, hasSeen } = this.imageQueue[0];
         this.props.history.replace(`/${_id}`);
 
         if (_id !== this.state._id)
-          this.setState({ loading: false, urlA, urlB, _id });
+          this.setState({ loading: false, urlA, urlB, _id, hasSeen });
       })
       .catch(e => {
         console.log(e);
@@ -134,16 +165,16 @@ class App extends Component {
                 to();
                 tryCount++;
               } else {
-                const { urlA, urlB, _id } = this.imageQueue[0];
+                const { urlA, urlB, _id, hasSeen } = this.imageQueue[0];
                 if (_id !== this.state._id)
-                  this.setState({ loading: false, urlA, urlB, _id });
+                  this.setState({ loading: false, urlA, urlB, _id, hasSeen });
               }
             }, 500);
           to();
         } else {
-          const { urlA, urlB, _id } = this.imageQueue[0];
+          const { urlA, urlB, _id, hasSeen } = this.imageQueue[0];
           if (_id !== this.state._id)
-            this.setState({ loading: false, urlA, urlB, _id });
+            this.setState({ loading: false, urlA, urlB, _id, hasSeen });
         }
       });
   }
@@ -156,6 +187,14 @@ class App extends Component {
     ) : (
       <div>
         <Header />
+        {this.state.leaderMp3 && (
+          <Sound
+            playStatus={Sound.status.PLAYING}
+            url="./leader-of-the-pack.mp3"
+            loop
+            autoPlay
+          />
+        )}
 
         <div className="picture-wrapper">
           <Picture
