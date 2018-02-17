@@ -4,11 +4,19 @@ import { check } from "meteor/check";
 import UserData from "./userData.js";
 
 Meteor.methods({
+  "userData.getLeader"() {
+    const leader = UserData.aggregate([
+      { $unwind: "$picks" },
+      { $sortByCount: "$_id" },
+      { $limit: 1 }
+    ]);
+    leader[0].isLeader = leader[0]._id === this.userId;
+    return leader;
+    //use aggregate
+  },
   "userData.createUserSession"() {
     let currentUser = UserData.find({ _id: this.userId }).fetch();
     const sessionId = new Meteor.Collection.ObjectID()._str;
-    // console.log(sessionId);
-    // console.log(currentUser);
     if (currentUser && currentUser.length === 0) {
       UserData.insert({
         _id: this.userId,
@@ -34,7 +42,6 @@ Meteor.methods({
         }
       );
     }
-    // console.log(this.userId);
   },
   "userData.userHasPicked"(compId) {
     const result = UserData.find(
@@ -46,9 +53,17 @@ Meteor.methods({
           }
         }
       },
-      { fields: { picks: 0, sessions: 0 } }
+      { fields: { picks: 1 } }
     ).fetch();
-    return result.length;
+    let aOrB;
+    if (result.length) {
+      result[0].picks.forEach(pick => {
+        if (pick.comparisonId === compId) aOrB = pick.pick;
+      });
+      return aOrB;
+    } else {
+      return false;
+    }
   },
   "userData.getPicks"() {
     const result = UserData.find(
@@ -57,7 +72,6 @@ Meteor.methods({
       },
       { fields: { _id: 0, "picks.comparisonId": 1 } }
     ).fetch();
-    //console.log(result);
     if (!Object.keys(result[0]).length) return [];
     return result[0].picks.map(pick => pick["comparisonId"]);
   },

@@ -1,11 +1,13 @@
 import { Dictionary } from "../dictionary/dictionary.js";
 import GoogleImages from "google-images";
 import "isomorphic-fetch";
-
-const imageSearch = new GoogleImages(
-  Meteor.settings.googleSearch[9].engineId,
-  Meteor.settings.googleSearch[9].apiKey
-);
+export let error403 = null;
+let apiKeyIndex = 0;
+const imageSearch = () =>
+  new GoogleImages(
+    Meteor.settings.googleSearch[apiKeyIndex].engineId,
+    Meteor.settings.googleSearch[apiKeyIndex].apiKey
+  );
 export const searchWords = () =>
   Dictionary.find(
     { $or: [{ id: randNum() }, { id: randNum() }] },
@@ -20,18 +22,19 @@ export const getUrl = async () => {
   let seedWords = undefined;
   let fileType = undefined;
   while (!url) {
-    console.log("loop");
-    await new Promise((resolve, resject) => {
-      setTimeout(() => {
-        resolve();
-      }, 1500);
-    });
+    console.log("request");
     seedWords = searchWords();
     let imageObj = [];
     try {
-      imageObj = await imageSearch.search(seedWords + " imagesize:500x500");
+      imageObj = await imageSearch().search(seedWords + " imagesize:500x500");
     } catch (e) {
       console.log(e.statusCode, "switch the key!!~");
+      apiKeyIndex++;
+      if (apiKeyIndex > 9) {
+        apiKeyIndex = 0;
+        error403 = "403";
+        break;
+      }
     }
     // if (!imageObj[0]) {
     //   flag words here
