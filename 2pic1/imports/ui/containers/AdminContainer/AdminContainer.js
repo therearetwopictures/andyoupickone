@@ -6,6 +6,7 @@ import { Accounts } from "meteor/accounts-base";
 import { LoginBox } from "meteor/universe:accounts-ui";
 import { withTracker } from "meteor/react-meteor-data";
 import LeaderBoardContainer from "../LeaderBoardContainer/LeaderBoardContainer.js";
+import "./styles.css";
 
 class AdminContainer extends Component {
   constructor(props) {
