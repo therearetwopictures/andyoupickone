@@ -5,7 +5,6 @@ import AccountsUIWrapper from "../../components/AccountsUIWrapper";
 import { Accounts } from "meteor/accounts-base";
 import { LoginBox } from "meteor/universe:accounts-ui";
 import { withTracker } from "meteor/react-meteor-data";
-import LeaderBoardContainer from "../LeaderBoardContainer/LeaderBoardContainer.js";
 import "./styles.css";
 
 class AdminContainer extends Component {
@@ -14,8 +13,13 @@ class AdminContainer extends Component {
     state: {
       newAdminEmail: "";
       password: "";
+      show: false;
     }
   }
+
+  toggleShowPasswordForm = () => {
+    this.setState({ show: !this.state.show });
+  };
 
   render() {
     console.log(this.user);
@@ -66,7 +70,15 @@ class AdminContainer extends Component {
                 New Admin User
               </button>
             </form>
-            <button>Change Password</button>
+            <button
+              onClick={e => {
+                e.preventDefault();
+                // userEmail = Meteor.user().emails[0].address;
+                // Accounts.forgotPassword({ email: userEmail });
+              }}
+            >
+              Change Password
+            </button>
           </div>
         ) : (
           <div>
