@@ -10,7 +10,7 @@ import Comparisons from "../comparisons/comparisons.js";
 // sorted in ascending (-1) or descending (1) order
 export const createLeastOrMostPopular = (AOrB, leastOrMost) => {
   let query = {};
-  query[AOrB] = { $ne: null };
+  query[AOrB] = { $nin: [null, "", 0] };
 
   let options = {};
   let fields = {};

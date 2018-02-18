@@ -107,6 +107,7 @@ Meteor.methods({
       },
       { $sort: { totalAB: -1 } },
       { $match: { $and: [{ totalAB: { $eq: true } }, { sumAB: { $ne: 0 } }] } },
+      { $sort: { sumAB: -1 } },
       { $project: { totalAB: 0, sumAB: 0 } },
       { $limit: 5 }
     ]);
