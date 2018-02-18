@@ -28,6 +28,20 @@ export default Meteor.startup(() => {
           <Route exact path="/reset-password/:token" component={Reset} />
           <Route
             exact
+            path="/stats/:compId"
+            render={({ match }) => (
+              <SingleStatsContainer compId={match.params.compId} />
+            )}
+          />
+          <Route
+            exact
+            path="/user/:userId"
+            render={({ match }) => (
+              <UserContainer userId={match.params.userId} />
+            )}
+          />
+          <Route
+            exact
             path="/:compId"
             render={({ match }) => (
               <AppComponent compId={match.params.compId} />
