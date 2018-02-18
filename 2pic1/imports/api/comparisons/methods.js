@@ -212,7 +212,7 @@ Meteor.methods({
         console.log("url:", url);
 
         let defaultParameters = {
-          api_key: watsonSettings.api_key,
+          api_key: watsonSettings.api_key2,
           imageurl: url,
           use_unauthenticated: false
         };
