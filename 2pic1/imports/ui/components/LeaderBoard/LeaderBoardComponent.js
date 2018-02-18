@@ -7,77 +7,61 @@ const LeaderBoard = props => {
       <h1>GOAT</h1>
       <div className="flex-item">
         <h1>Most Popular Image:</h1>
-        <p>Selected {props.mostPopularImage.count} times</p>
-        <img src={props.mostPopularImage.url} />
+        <p>
+          Picked {props.mostPopularImage.count}{" "}
+          {props.mostPopularImage.count > 1 ? "times" : "time"}
+        </p>
+        <div className="picture">
+          <img src={props.mostPopularImage.url} />
+        </div>
       </div>
       <div className="flex-item">
+        <h1>Least Popular Image:</h1>
         <p>
-          {" "}
-          Closest to Even Split:
-          <button
-            onClick={e => {
-              e.preventDefault();
-              Meteor.call("comparisons.getEvenComparison", function(
-                error,
-                result
-              ) {
-                if (error) {
-                  console.log(error.reason);
-                  return;
-                }
-                console.log(result);
-              });
-            }}
-          >
-            Find Out!
-          </button>
+          Picked {props.leastPopularImage.count}{" "}
+          {props.leastPopularImage.count > 1 ? "times" : "time"}
         </p>
+        <div className="picture">
+          <img src={props.leastPopularImage.url} />
+        </div>
       </div>
       <div className="flex-item">
+        <h1>Most Viewed Comparison:</h1>
         <p>
-          {" "}
-          Least Popular Image:
-          <button
-            onClick={e => {
-              e.preventDefault();
-              Meteor.call("comparisons.getLeastPopularImage", function(
-                error,
-                result
-              ) {
-                if (error) {
-                  console.log(error.reason);
-                  return;
-                }
-                console.log(result);
-              });
-            }}
-          >
-            Find Out!
-          </button>
+          Viewed {props.mostPopularComparison.count}{" "}
+          {props.mostPopularComparison.count > 1 ? "times" : "time"}
         </p>
+        <div className="picture-wrapper">
+          Picked {props.mostPopularComparison.ACount}{" "}
+          {props.mostPopularComparison.ACount > 1 ? "times" : "time"}
+          <div className="picture">
+            <img src={props.mostPopularComparison.urlA} />
+          </div>
+          Picked {props.mostPopularComparison.BCount}{" "}
+          {props.mostPopularComparison.BCount > 1 ? "times" : "time"}
+          <div className="picture">
+            <img src={props.mostPopularComparison.urlB} />
+          </div>
+        </div>
       </div>
       <div className="flex-item">
+        <h1>Most Contentious Comparison:</h1>
         <p>
-          {" "}
-          Most Viewed Comparison:
-          <button
-            onClick={e => {
-              e.preventDefault();
-              Meteor.call("comparisons.getMostPopularComparison", function(
-                error,
-                result
-              ) {
-                if (error) {
-                  console.log(error.reason);
-                  return;
-                }
-                console.log(result);
-              });
-            }}
-          >
-            Find Out!
-          </button>
+          Viewed {props.closestToEvenSplit.count}{" "}
+          {props.closestToEvenSplit.count > 1 ? "times" : "time"}
         </p>
+        <div className="picture-wrapper">
+          Picked {props.closestToEvenSplit.ACount}{" "}
+          {props.closestToEvenSplit.ACount > 1 ? "times" : "time"}
+          <div className="picture">
+            <img src={props.closestToEvenSplit.urlA} />
+          </div>
+          Picked {props.closestToEvenSplit.BCount}{" "}
+          {props.closestToEvenSplit.BCount > 1 ? "times" : "time"}
+          <div className="picture">
+            <img src={props.closestToEvenSplit.urlB} />
+          </div>
+        </div>
       </div>
       <div className="flex-item">
         <p>
