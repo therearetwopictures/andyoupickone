@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import Comparisons from "../../api/comparisons/comparisons.js";
 
 Meteor.startup(() => {
+  process.env.MAIL_URL = Meteor.settings.MAIL_URL;
   Accounts.onCreateUser((options, user) => {
     console.log(user);
     if (user.emails) {

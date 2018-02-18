@@ -10,15 +10,6 @@ import StatsPage from "../../ui/components/StatsPage/";
 export default Meteor.startup(() => {
   AccountsAnonymous.login();
   Meteor.call("userData.createUserSession");
-  // Meteor.call("comparisons.addOne");
-  // Meteor.call(
-  //   "comparisons.classifyImage",
-  //   "434u3eCWXcRJgmQRv",
-  //   "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1437660869i/23745753._UY500_SS500_.jpg",
-  //   "http://www.artitude.eu/immagini/news/3-1307111909274.jpg"
-  // );
-
-  // Meteor.call("comparisons.getRandOne");
 
   render(
     <Router>
@@ -38,8 +29,9 @@ export default Meteor.startup(() => {
               <AppComponent compId={match.params.compId} />
             )}
           />
-          <Route exact path="stats" render={StatsContainer} />
+          <Route exact path="/stats" render={StatsContainer} />
           <Route exact path="stats/:compId" render={StatsPage} />
+          <Route path="/#/reset-pasword/:hash" render={reset} />
         </Switch>
       </div>
     </Router>,

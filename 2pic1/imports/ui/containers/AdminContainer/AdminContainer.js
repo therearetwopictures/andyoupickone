@@ -73,8 +73,8 @@ class AdminContainer extends Component {
             <button
               onClick={e => {
                 e.preventDefault();
-                // userEmail = Meteor.user().emails[0].address;
-                // Accounts.forgotPassword({ email: userEmail });
+                userEmail = Meteor.user().emails[0].address;
+                Accounts.forgotPassword({ email: userEmail });
               }}
             >
               Change Password
