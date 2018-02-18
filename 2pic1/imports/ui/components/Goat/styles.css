@@ -8,6 +8,7 @@
 
 .item {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
 }
 div.picture-wrapper {
@@ -26,103 +27,3 @@ div.desc {
     padding: 15px;
     text-align: center;
 }
-
-/* div.picture-wrapper {
-    margin: 5px;
-    border: 1px solid #ccc;
-    float: left;
-    width: 300px;
-}
-
-div.picture-wrapper img {
-    width: 100%;
-    height: auto;
-}
-
-div.desc {
-    padding: 15px;
-    text-align: center;
-}
-.row {
-  width: 100%;
-  margin: 0 auto;
-}
-.block {
-  width: 100px;
-  display: inline-block;
-}
-.flex-container {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-flex-wrap: nowrap;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-align-content: center;
-    -ms-flex-line-pack: center;
-    align-content: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    }
-/*
-.flex-item {
-    -webkit-order: 0;
-    -ms-flex-order: 0;
-    order: 0;
-    -webkit-flex: 0 1 auto;
-    -ms-flex: 0 1 auto;
-    flex: 0 1 auto;
-    -webkit-align-self: auto;
-    -ms-flex-item-align: auto;
-    align-self: auto;
-    }
-
-    .picture-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-flow: row wrap;
-      height: 100%;
-      width: 100%;
-    }
-    .picture {
-      flex: 0 0 250px;
-      width: 250px;
-      height: 250px;
-      background-color: gray;
-      margin-top: 20px;
-      overflow: hidden;
-      border: 1px solid #ccc;
-    }
-    .picture img {
-      width: 250px;
-      height: 250px;
-    }
-
-    @media (min-width: 550px) {
-      .picture {
-        margin: 20px;
-      }
-      .picture img {
-        width: 250px;
-        height: 250px;
-      }
-    }
-    @media (min-width: 1100px) {
-      .picture {
-        flex: 0 0 500px;
-        width: 500px;
-        height: 500px;
-      }
-      .picture img {
-        width: 500px;
-        height: 500px;
-      }
-    } */ */
