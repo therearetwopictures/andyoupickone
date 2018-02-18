@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 export default class Reset extends Component {
   constructor(props) {
@@ -14,6 +15,10 @@ export default class Reset extends Component {
       this.state.password &&
       this.state.confirm &&
       this.state.password === this.state.confirm;
+
+    if (this.state.success) {
+      return <Redirect to={{ pathname: "/totally-not-an-admin-page" }} />;
+    }
     return (
       <form
         onSubmit={e => {
@@ -22,7 +27,7 @@ export default class Reset extends Component {
             this.props.match.params.token,
             this.state.password,
             err => {
-              if (!err) console.log("Reset success");
+              if (!err) this.setState({ success: true });
             }
           );
         }}
