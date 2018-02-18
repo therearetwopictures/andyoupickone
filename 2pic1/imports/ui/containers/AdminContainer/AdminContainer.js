@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { watsonBatchClassifyImages } from "./helpers";
 import AccountsUIWrapper from "../../components/AccountsUIWrapper";
 import { Accounts } from "meteor/accounts-base";
-import { LoginBox } from "meteor/universe:accounts-ui";
+import { LoginBox, ResetPasswordBox } from "meteor/universe:accounts-ui";
 import { withTracker } from "meteor/react-meteor-data";
 import "./styles.css";
 
@@ -70,6 +70,7 @@ class AdminContainer extends Component {
                 New Admin User
               </button>
             </form>
+
             <button
               onClick={e => {
                 e.preventDefault();
