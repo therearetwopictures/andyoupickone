@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import { watsonBatchClassifyImages } from "./helpers";
 import AccountsUIWrapper from "../../components/AccountsUIWrapper";
 import { Accounts } from "meteor/accounts-base";
-import { LoginBox } from "meteor/universe:accounts-ui";
+import { LoginBox, ResetPasswordBox } from "meteor/universe:accounts-ui";
 import { withTracker } from "meteor/react-meteor-data";
-import LeaderBoardContainer from "../LeaderBoardContainer/LeaderBoardContainer.js";
 import "./styles.css";
 
 class AdminContainer extends Component {
@@ -14,8 +13,13 @@ class AdminContainer extends Component {
     state: {
       newAdminEmail: "";
       password: "";
+      show: false;
     }
   }
+
+  toggleShowPasswordForm = () => {
+    this.setState({ show: !this.state.show });
+  };
 
   render() {
     console.log(this.user);
@@ -28,7 +32,7 @@ class AdminContainer extends Component {
         </div>
         {isAdmin ? (
           <div className="watson-functions-container">
-            <h1>HELLLLLLO</h1>
+            <h1>Administration Station</h1>
             <button
               onClick={e => {
                 e.preventDefault();
@@ -37,6 +41,7 @@ class AdminContainer extends Component {
             >
               Generate Tags
             </button>
+            <h2>Create up new admin</h2>
             <form>
               <input
                 placeholder="Email"
@@ -59,17 +64,26 @@ class AdminContainer extends Component {
                     email: this.state.newAdminEmail,
                     password: this.state.password
                   });
+                  Accounts.sendVerificationEmail(newAdmin);
                 }}
               >
                 New Admin User
               </button>
             </form>
-            <LeaderBoardContainer />
-            <button>Generate Tags</button>
+
+            <button
+              onClick={e => {
+                e.preventDefault();
+                userEmail = Meteor.user().emails[0].address;
+                Accounts.forgotPassword({ email: userEmail });
+              }}
+            >
+              Change Password
+            </button>
           </div>
         ) : (
           <div>
-            <p>Log in ya goober</p>
+            <p>Log in as an Admin ya goober</p>
           </div>
         )}
       </div>

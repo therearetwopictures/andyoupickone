@@ -83,10 +83,70 @@ const LeaderBoard = () => {
             Find Out!
           </button>
         </p>
-        <p> Average Session Time: </p>
-        <p> Longest Session Time: </p>
-        <p> Most Picks in One Session: </p>
-        <p> UserId with Most Sessions: </p>
+        <p>
+          {" "}
+          Average Session Time:
+          <button
+            onClick={e => {
+              e.preventDefault();
+              Meteor.call("userData.averageSessionTime", function(
+                error,
+                result
+              ) {
+                if (error) {
+                  console.log(error.reason);
+                  return;
+                }
+                console.log(result);
+              });
+            }}
+          >
+            Find Out!
+          </button>
+        </p>
+        <p>
+          {" "}
+          Longest Session Time:
+          <button
+            onClick={e => {
+              e.preventDefault();
+              Meteor.call("userData.longestSessionTime", function(
+                error,
+                result
+              ) {
+                if (error) {
+                  console.log(error.reason);
+                  return;
+                }
+                console.log(result);
+              });
+            }}
+          >
+            Find Out!
+          </button>
+        </p>
+        <p> User with Most Picks: </p>
+        <p>
+          {" "}
+          UserId with Most Sessions:
+          <button
+            onClick={e => {
+              e.preventDefault();
+              Meteor.call("userData.userWithMostSessions", function(
+                error,
+                result
+              ) {
+                if (error) {
+                  console.log(error.reason);
+                  return;
+                }
+                console.log(result);
+              });
+            }}
+          >
+            Find Out!
+          </button>
+        </p>
       </div>
     </div>
   );

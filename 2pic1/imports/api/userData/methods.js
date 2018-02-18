@@ -10,7 +10,7 @@ Meteor.methods({
       { $sortByCount: "$_id" },
       { $limit: 1 }
     ]);
-    leader[0].isLeader = leader[0]._id === this.userId;
+    //leader[0].isLeader = leader[0]._id === this.userId;
     return leader;
     //use aggregate
   },
@@ -88,5 +88,49 @@ Meteor.methods({
         $set: { "sessions.$.end.-1": new Date().toISOString() }
       }
     );
+  },
+  // @returns an array containing
+  // - an empty array if no sessions exist for any user
+  // - an array containing one user id and the number of sessions
+  "userData.userWithMostSessions"() {
+    const results = UserData.aggregate([
+      { $unwind: "$sessions" },
+      { $sortByCount: "$_id" },
+      { $limit: 1 }
+    ]);
+    return results;
+  },
+  // @returns an array containing userId and highest session time
+  // - if no sessions exist, an empty array is returned
+  "userData.longestSessionTime"() {
+    const results = UserData.aggregate([
+      {
+        $unwind: "$sessions"
+      },
+      {
+        $project: {
+          _id: 1,
+          diff: { $subtract: ["$sessions.end", "$sessions.start"] }
+        }
+      },
+      { $sort: { diff: -1 } },
+      { $limit: 1 }
+    ]);
+    return results;
+  },
+  // @returns a string representing the average time spent across all users
+  "userData.averageSessionTime"() {
+    const results = UserData.aggregate([
+      {
+        $unwind: "$sessions"
+      },
+      {
+        $project: {
+          diff: { $subtract: ["$sessions.end", "$sessions.start"] }
+        }
+      },
+      { $group: { _id: null, avgPerUser: { $avg: "$diff" } } }
+    ]);
+    return results[0].avgPerUser;
   }
 });
