@@ -10,16 +10,11 @@ import "./styles.css";
 class AdminContainer extends Component {
   constructor(props) {
     super(props);
-    state: {
-      newAdminEmail: "";
-      password: "";
-      show: false;
-    }
+    this.state = {
+      newAdminEmail: "",
+      password: ""
+    };
   }
-
-  toggleShowPasswordForm = () => {
-    this.setState({ show: !this.state.show });
-  };
 
   render() {
     console.log(this.user);
