@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
-import Stats from "../../components/Stats";
+import LeaderBoard from "../../components/Leaders";
+import CurrentUser from "../../components/CurrentUser";
 import InsightsNavBar from "../../components/InsightsNavBar";
 
 export default class LeadersContainer extends Component {
@@ -11,7 +12,8 @@ export default class LeadersContainer extends Component {
     return (
       <div>
         <InsightsNavBar />
-        <Stats />
+        <CurrentUser />
+        <Leaders />
       </div>
     );
   }

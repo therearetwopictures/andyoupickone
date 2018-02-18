@@ -6,8 +6,8 @@ import AppComponent from "../../ui/containers/app/app.js";
 import AdminContainer from "../../ui/containers/AdminContainer";
 import Reset from "../../ui/components/reset";
 import StatsContainer from "../../ui/containers/StatsContainer/";
-import StatsPage from "../../ui/components/StatsPage/";
-import LeaderBoardContainer from "../../ui/containers/LeaderBoardContainer/";
+import GoatsContainer from "../../ui/containers/GoatsContainer/";
+import LeaderBoardContainer from "../../ui/containers/LeadersContainer/";
 
 export default Meteor.startup(() => {
   AccountsAnonymous.login();
@@ -17,13 +17,15 @@ export default Meteor.startup(() => {
     <Router>
       <div>
         <Switch>
-          {" "}
           <Route
             exact
             path="/totally-not-an-admin-page"
             component={AdminContainer}
           />
-          <Route exact path="/goat" component={LeaderBoardContainer} />
+          <Route exact path="/goats" component={GoatsContainer} />
+          <Route exact path="/stats" component={StatsContainer} />
+          <Route exact path="/leaders" component={LeadersContainer} />
+          <Route exact path="/reset-password/:token" component={Reset} />
           <Route
             exact
             path="/:compId"
@@ -31,9 +33,6 @@ export default Meteor.startup(() => {
               <AppComponent compId={match.params.compId} />
             )}
           />
-          <Route exact path="/stats" component={StatsContainer} />
-          <Route exact path="stats/:compId" component={StatsPage} />
-          <Route path="/reset-password/:token" component={Reset} />
           <Route exact path="/" component={AppComponent} />
         </Switch>
       </div>
