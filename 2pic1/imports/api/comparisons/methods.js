@@ -88,9 +88,24 @@ Meteor.methods({
       );
     }
   },
+  //@retuns an array containing 2 elements:
+  // - sum of times A has been picked
+  // - sum of times B has been picked
+  "comparisons.getAVB"() {
+    let query = Comparisons.aggregate([
+      {
+        $group: {
+          _id: null,
+          sumA: { $sum: "$A" },
+          sumB: { $sum: "$B" }
+        }
+      }
+    ]);
+    return query;
+  },
   // @returns an array of results:
   // - empty in the case no picks have been made in the db
-  // - array of one or more results (limited to 5)
+  // - array of one or more results (limited to 1)
   // nb: excludes results that have an even match of 0
   "comparisons.getEvenComparison"() {
     let query = Comparisons.aggregate([
@@ -108,15 +123,15 @@ Meteor.methods({
       { $sort: { totalAB: -1 } },
       { $match: { $and: [{ totalAB: { $eq: true } }, { sumAB: { $ne: 0 } }] } },
       { $sort: { sumAB: -1 } },
-      { $project: { totalAB: 0, sumAB: 0 } },
-      { $limit: 5 }
+      { $project: { totalAB: 0 } },
+      { $limit: 1 }
     ]);
     return query;
   },
   // @returns an array of results:
   // - empty in the case no picks have been made in the db
   // - array of one result (the first one if there are multiples w/same)
-  // limited to 5, if multiples exist
+  // limited to 1, if multiples exist
   "comparisons.getMostPopularComparison"() {
     let query = Comparisons.aggregate([
       {
@@ -126,7 +141,7 @@ Meteor.methods({
       },
       { $project: { totalAB: { $sum: ["$_id.A", "$_id.B"] } } },
       { $sort: { totalAB: -1 } },
-      { $limit: 5 }
+      { $limit: 1 }
     ]);
     return query;
   },
@@ -197,7 +212,7 @@ Meteor.methods({
         console.log("url:", url);
 
         let defaultParameters = {
-          api_key: watsonSettings.api_key,
+          api_key: watsonSettings.api_key2,
           imageurl: url,
           use_unauthenticated: false
         };

@@ -1,3 +1,3 @@
-import LeaderBoardContainer from "./LeaderBoardContainer";
+import LeadersContainer from "./LeadersContainer";
 
-export default LeaderBoardContainer;
+export default LeadersContainer;

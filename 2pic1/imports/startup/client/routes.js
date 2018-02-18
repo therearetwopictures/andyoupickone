@@ -6,7 +6,7 @@ import AppComponent from "../../ui/containers/app/app.js";
 import AdminContainer from "../../ui/containers/AdminContainer";
 import Reset from "../../ui/components/reset";
 import StatsContainer from "../../ui/containers/StatsContainer/";
-import GoatsContainer from "../../ui/containers/GoatsContainer/";
+import GoatContainer from "../../ui/containers/GoatContainer/";
 import LeaderBoardContainer from "../../ui/containers/LeadersContainer/";
 
 export default Meteor.startup(() => {
@@ -22,7 +22,7 @@ export default Meteor.startup(() => {
             path="/totally-not-an-admin-page"
             component={AdminContainer}
           />
-          <Route exact path="/goats" component={GoatsContainer} />
+          <Route exact path="/goat" component={GoatContainer} />
           <Route exact path="/stats" component={StatsContainer} />
           <Route exact path="/leaders" component={LeadersContainer} />
           <Route exact path="/reset-password/:token" component={Reset} />
