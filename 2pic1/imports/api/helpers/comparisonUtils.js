@@ -31,7 +31,7 @@ export const getUrl = async () => {
     } catch (e) {
       console.log(e.statusCode, "switch the key!!~");
       apiKeyIndex++;
-      if (apiKeyIndex > 9) {
+      if (apiKeyIndex >= Meteor.settings.googleSearch.length) {
         apiKeyIndex = 0;
         error403 = "403";
         break;
