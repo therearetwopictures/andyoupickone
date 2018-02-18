@@ -1,8 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
-import LeaderBoard from "../../components/LeaderBoard";
+import GoatComponent from "../../components/Goat";
 
-export default class LeaderBoardContainer extends Component {
+export default class GoatContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,17 +75,27 @@ export default class LeaderBoardContainer extends Component {
       this.setState({ closestToEvenSplit: query });
     });
   }
+  getAVB() {
+    Meteor.call("comparisons.getAVB", (error, result) => {
+      if (error) {
+        console.log(error.reason);
+        return;
+      }
+      console.log(result);
+    });
+  }
   componentDidMount() {
     this.getMostPopularImage();
     this.getLeastPopularImage();
     this.getMostPopularComparison();
     this.getClosestToEvenSplit();
+    this.getAVB();
   }
 
   render() {
     return (
       <div>
-        <LeaderBoard
+        <GoatComponent
           mostPopularImage={this.state.mostPopularImage}
           leastPopularImage={this.state.leastPopularImage}
           mostPopularComparison={this.state.mostPopularComparison}

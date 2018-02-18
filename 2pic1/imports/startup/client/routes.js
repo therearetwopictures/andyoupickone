@@ -7,7 +7,7 @@ import AdminContainer from "../../ui/containers/AdminContainer";
 import Reset from "../../ui/components/reset";
 import StatsContainer from "../../ui/containers/StatsContainer/";
 import StatsPage from "../../ui/components/StatsPage/";
-import LeaderBoardContainer from "../../ui/containers/LeaderBoardContainer/";
+import GoatContainer from "../../ui/containers/GoatContainer/";
 
 export default Meteor.startup(() => {
   AccountsAnonymous.login();
@@ -23,7 +23,7 @@ export default Meteor.startup(() => {
             path="/totally-not-an-admin-page"
             component={AdminContainer}
           />
-          <Route exact path="/goat" component={LeaderBoardContainer} />
+          <Route exact path="/goat" component={GoatContainer} />
           <Route
             exact
             path="/:compId"
