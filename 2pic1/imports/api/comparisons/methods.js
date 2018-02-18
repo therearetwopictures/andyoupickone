@@ -88,6 +88,21 @@ Meteor.methods({
       );
     }
   },
+  //@retuns an array containing 2 elements:
+  // - sum of times A has been picked
+  // - sum of times B has been picked
+  "comparisons.getAVB"() {
+    let query = Comparisons.aggregate([
+      {
+        $group: {
+          _id: null,
+          sumA: { $sum: "$A" },
+          sumB: { $sum: "$B" }
+        }
+      }
+    ]);
+    return query;
+  },
   // @returns an array of results:
   // - empty in the case no picks have been made in the db
   // - array of one or more results (limited to 1)
