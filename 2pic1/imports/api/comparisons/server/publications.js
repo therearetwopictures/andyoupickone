@@ -4,5 +4,8 @@ import { Meteor } from "meteor/meteor";
 import Comparisons from "../comparisons.js";
 
 Meteor.publish("comparisons.all", function() {
-  return Comparisons.find();
+  return Comparisons.find({}, { fields: { _id: 1 } });
+});
+Meteor.publish("comparisons.getByCompId", function(compId) {
+  return Comparisons.find(compId);
 });

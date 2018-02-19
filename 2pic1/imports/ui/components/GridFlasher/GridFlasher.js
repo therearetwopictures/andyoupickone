@@ -3,6 +3,8 @@ import Flasher from "./Flasher";
 import "./styles.css";
 const GridFlasher = ({ comps }) => (
   <div className="flasher-wrapper">
-    {comps.map(comp => <Flasher key={comp._id} A={comp.A} B={comp.B} />)}
+    <h2>user activity - grid flasher</h2>
+    {comps.map(comp => <Flasher key={comp._id} id={comp._id} />)}
   </div>
 );
+export default GridFlasher;

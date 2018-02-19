@@ -1,11 +1,13 @@
 .flasher-wrapper {
-  margin: auto;
-  width: 360px;
+  margin: 0 auto;
+  width: 90%;
+  line-height: 0;
 }
 
 .flasher {
   width: 10px;
   height: 10px;
+  display: inline-block;
   margin: 1px;
   background-color: grey;
 }
@@ -16,9 +18,14 @@
 }
 
 .greenFlasher {
-  background-color: green;
+  background-color: limegreen;
 }
 
 .salmonFlasher {
   background-color: salmon;
+}
+@media (min-width: 550px) {
+  .flasher-wrapper {
+    width: 500px;
+  }
 }
