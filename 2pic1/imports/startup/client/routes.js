@@ -25,7 +25,7 @@ export default Meteor.startup(() => {
           />
           <Route exact path="/goat" component={GoatContainer} />
           <Route exact path="/stats" component={StatsContainer} />
-          {/* <Route exact path="/leaders" component={LeaderBoardContainer} /> */}
+          <Route exact path="/leaders" component={LeaderBoardContainer} />
           <Route exact path="/reset-password/:token" component={Reset} />
           <Route
             exact

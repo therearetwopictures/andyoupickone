@@ -39,7 +39,7 @@ class Flasher extends React.Component {
 }
 
 export default withTracker(({ id }) => {
-  Meteor.subscribe("comparisons.getByCompId", id);
+  Meteor.subscribe("comparisons.byCompId", id);
   return {
     comp: Comparisons.find(id).fetch()
   };

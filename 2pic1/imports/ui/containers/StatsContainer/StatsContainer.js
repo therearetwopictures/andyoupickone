@@ -26,7 +26,7 @@ class StatsContainer extends Component {
 }
 
 export default withTracker(() => {
-  Meteor.subscribe("comparisons.all");
+  Meteor.subscribe("comparisons.allIdOnly");
   return {
     comparisons: Comparisons.find({}, { fields: { _id: 1 } }).fetch()
   };
