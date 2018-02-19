@@ -9,6 +9,7 @@
     "@babel/runtime": "^7.0.0-beta.39",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
+    "d3": "^4.13.0",
     "download-file": "^0.1.5",
     "es6-promise": "^4.2.4",
     "google-cloud-storage-standalone": "^0.37.0",
