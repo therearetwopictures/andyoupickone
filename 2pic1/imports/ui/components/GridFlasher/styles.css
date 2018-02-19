@@ -1,0 +1,31 @@
+.flasher-wrapper {
+  margin: 0 auto;
+  width: 90%;
+  line-height: 0;
+}
+
+.flasher {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin: 1px;
+  background-color: grey;
+}
+
+.greyFlasher {
+  background-color: grey;
+  transition: 0.5s;
+}
+
+.greenFlasher {
+  background-color: limegreen;
+}
+
+.salmonFlasher {
+  background-color: salmon;
+}
+@media (min-width: 550px) {
+  .flasher-wrapper {
+    width: 500px;
+  }
+}

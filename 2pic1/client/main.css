@@ -141,3 +141,18 @@ table {
 .leaderOfThePack {
   background-color: salmon;
 }
+h2 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  text-align: center;
+  margin: 10px auto 20px;
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+  text-decoration: none;
+  color: black;
+}
