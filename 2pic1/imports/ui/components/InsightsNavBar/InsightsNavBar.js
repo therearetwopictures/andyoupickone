@@ -7,7 +7,7 @@ const InsightsNavBar = () => (
     <Link className="nav-button" to="/">
       home
     </Link>
-    <Link className="nav-button" to="/goats">
+    <Link className="nav-button" to="/goat">
       goats
     </Link>
     <Link className="nav-button" to="/stats">
