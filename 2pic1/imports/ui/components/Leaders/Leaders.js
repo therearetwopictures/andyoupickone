@@ -1,6 +1,7 @@
 import React from "react";
 import UserRow from "./UserRow";
 import "./styles.css";
+
 const Leaders = ({ userIds }) => (
   <ol className="leaders-wrapper">
     <li>

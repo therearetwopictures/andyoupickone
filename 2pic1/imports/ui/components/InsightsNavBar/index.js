@@ -1,3 +1,3 @@
-import InsightsNavBar from "./InsightsNavBar";
+import InsightsNavBar from './InsightsNavBar';
 
 export default InsightsNavBar;
