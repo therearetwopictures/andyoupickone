@@ -11,7 +11,25 @@ class StatsContainer extends Component {
   constructor(props) {
     super(props);
   }
+  getWatsonColorTags = () => {
+    const color = /color/;
+    this.props.comparisons.reduce((acc, comp) => {
+      if (comp.tagsA) {
+        comp.tagsA.forEach(tag => {
+          tagClass = tag.class;
+          if (color.test(tagClass)) {
+            console.log("found a color!");
+          }
+        });
+      }
+      if (comp.tagsB) {
+        comp.tagsB.forEach(() => {});
+      }
+    }, {});
+  };
+
   render() {
+    this.props.comparisons && this.getWatsonColorTags();
     return (
       <div>
         <InsightsNavBar />
