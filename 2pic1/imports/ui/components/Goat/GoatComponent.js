@@ -3,10 +3,12 @@ import "./styles.css";
 
 const GoatComponent = props => (
   <div className="container">
-    <h1>GOAT</h1>
+    <div className="header">
+      <h1>GOAT</h1>
+    </div>
     <div className="item">
       <div className="goat-picture-wrapper">
-        <h1>Most Popular Image:</h1>
+        <h2>Most Popular Image:</h2>
         <img src={props.mostPopularImage.url} />
         <div className="desc">
           Picked {props.mostPopularImage.count}{" "}
@@ -15,7 +17,7 @@ const GoatComponent = props => (
       </div>
 
       <div className="goat-picture-wrapper">
-        <h1>Least Popular Image:</h1>
+        <h2>Least Popular Image:</h2>
         <img src={props.leastPopularImage.url} />
         <div className="desc">
           Picked {props.leastPopularImage.count}{" "}
@@ -23,7 +25,7 @@ const GoatComponent = props => (
         </div>
       </div>
     </div>
-    <h1>Most Popular Comparison:</h1>
+    <h2>Most Popular Comparison:</h2>
     <p>
       Viewed {props.mostPopularComparison.count}{" "}
       {props.mostPopularComparison.count > 1 ? "times" : "time"}
@@ -44,7 +46,7 @@ const GoatComponent = props => (
         </div>
       </div>
     </div>
-    <h1>Most Contentious Comparison:</h1>
+    <h2>Most Contentious Comparison:</h2>
     <p>
       Viewed {props.closestToEvenSplit.count}{" "}
       {props.closestToEvenSplit.count > 1 ? "times" : "time"}
