@@ -7,7 +7,7 @@ if (Meteor.isServer) {
     return UserData.find();
   });
   Meteor.publish("userData.allIdOnly", function() {
-    return UserData.find({}, { fields: { _id: 1 } });
+    return UserData.find({}, { fields: { _id: 1, picks: 1 } });
   });
 
   Meteor.publish("userData.byUserId", function(userId) {

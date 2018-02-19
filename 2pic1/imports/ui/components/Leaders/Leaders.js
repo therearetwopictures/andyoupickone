@@ -1,17 +1,20 @@
 import React from "react";
 import UserRow from "./UserRow";
-
+import "./styles.css";
 const Leaders = ({ userIds }) => (
   <ol className="leaders-wrapper">
     <li>
-      <span style={{ fontWeight: 500 }}>user id</span>
-      <span style={{ fontWeight: 500 }}>left</span>
-      <span style={{ fontWeight: 500 }}>right</span>
-      <span style={{ fontWeight: 500 }}>left %</span>
-      <span style={{ fontWeight: 500 }}>right %</span>
-      <span style={{ fontWeight: 500 }}>last pick</span>
+      <span className="leader-board-heading">user id</span>
+      <span className="leader-board-heading">left</span>
+      <span className="leader-board-heading">left %</span>
+      <span className="leader-board-heading">right</span>
+      <span className="leader-board-heading">right %</span>
+      <span className="leader-board-heading">total</span>
+      <span className="leader-board-heading">last pick</span>
     </li>
-    {userIds.map(user => <UserRow key={user._id} id={user._id} />)}
+    {userIds.map(user => (
+      <UserRow key={user._id} id={user._id} first={user.first} />
+    ))}
   </ol>
 );
 

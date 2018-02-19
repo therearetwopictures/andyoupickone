@@ -14,31 +14,47 @@ class UserRow extends Component {
       B: 0,
       Aper: undefined,
       Bper: undefined,
-      lastP: { pick: undefined, _id: undefined }
+      total: undefined,
+      lastP: { pick: undefined, comparisonId: undefined }
     };
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    if (nextProps.user) {
-      const { A, B } = nextProps.user[0].picks.reduce(
-        (acc, curr) => {
-          curr.pick === "A" && acc.A++;
-          curr.pick === "B" && acc.B++;
-        },
-        {
-          A: 0,
-          B: 0
-        }
-      );
+    if (
+      nextProps.user &&
+      nextProps.user[0] &&
+      (this.state.A + this.state.B === 0 ||
+        (nextProps.user[0].picks &&
+          nextProps.user[0].picks[nextProps.user[0].picks.length - 1]
+            .comparisonId !== this.state.lastP.comparisonId))
+    ) {
+      const { A, B } = nextProps.user[0].picks
+        ? nextProps.user[0].picks.reduce(
+            (acc, curr) => {
+              if (curr.pick === "A") acc.A = acc.A + 1;
+              if (curr.pick === "B") acc.B = acc.B + 1;
+              return acc;
+            },
+            {
+              A: 0,
+              B: 0
+            }
+          )
+        : {
+            A: 0,
+            B: 0
+          };
+      const lastP = nextProps.user[0].picks
+        ? nextProps.user[0].picks[nextProps.user[0].picks.length - 1]
+        : { pick: "", comparisonId: "" };
       const newState = {
         _id: nextProps.user[0]._id,
         A,
         B,
         Aper: A / (A + B),
         Bper: B / (A + B),
-        lastP: nextProps.user[0].picks[nextProps.user.picks.length - 1]
+        total: A + B,
+        lastP
       };
-      console.log(newState);
       this.setState({
         ...newState
       });
@@ -49,27 +65,39 @@ class UserRow extends Component {
       <li
         className={
           this.props.id === this.props.currentUserId
-            ? "greenRow" && this.props.first && " salmonRow"
-            : "lightgreyRow" && this.props.first && " salmonRow"
+            ? `greenRow ${this.props.first && " salmonRow"}`
+            : `lightgreyRow ${this.props.first && " salmonRow"}`
         }
       >
         <Link to={`/user/${this.props.id}`}>
-          <span>{this.props.id}</span>
-          <span>{this.state._id ? this.state.A : "loading..."}</span>
-          <span>{this.state._id ? this.state.Aper : "loading..."}</span>
-          <span>{this.state._id ? this.state.B : "loading..."}</span>
-          <span>{this.state._id ? this.state.Bper : "loading..."}</span>
-          {this.state._id ? (
-            <span>
-              {this.state.lastP.pick},{" "}
-              <Link to={`/${this.state.lastP._id}`}>
-                {this.state.lastP._id}
-              </Link>
-            </span>
-          ) : (
-            <span>loading...</span>
-          )}
+          <span>
+            {this.props.id}{" "}
+            {this.props.id === this.props.currentUserId ? "~YOU~" : ""}
+          </span>
         </Link>
+        <span>{this.state._id ? this.state.A : "loading..."}</span>
+        <span>
+          {this.state._id
+            ? `${(this.state.Aper * 100).toString().substring(0, 4)}%`
+            : "loading..."}
+        </span>
+        <span>{this.state._id ? this.state.B : "loading..."}</span>
+        <span>
+          {this.state._id
+            ? `${(this.state.Bper * 100).toString().substring(0, 4)}%`
+            : "loading..."}
+        </span>
+        <span>{this.state._id ? this.state.total : "loading..."}</span>
+        {this.state._id ? (
+          <span>
+            {this.state.lastP.pick},{" "}
+            <Link to={`/${this.state.lastP.comparisonId}`}>
+              {this.state.lastP.comparisonId}
+            </Link>
+          </span>
+        ) : (
+          <span>loading...</span>
+        )}
       </li>
     );
   }
@@ -79,6 +107,6 @@ export default withTracker(({ id }) => {
   Meteor.subscribe("userData.byUserId", id);
   return {
     user: UserData.find(id).fetch(),
-    currentUserId: this.userId
+    currentUserId: Meteor.userId()
   };
 })(UserRow);

@@ -7,7 +7,7 @@ import AdminContainer from "../../ui/containers/AdminContainer";
 import Reset from "../../ui/components/reset";
 import StatsContainer from "../../ui/containers/StatsContainer/";
 import SingleStatsContainer from "../../ui/containers/SingleStatsContainer/";
-import SingleUserContainer from "../../ui/containers/UserContainer/";
+import SingleUserContainer from "../../ui/containers/SingleUserContainer/";
 import GoatContainer from "../../ui/containers/GoatContainer/";
 import LeaderBoardContainer from "../../ui/containers/LeadersContainer/";
 

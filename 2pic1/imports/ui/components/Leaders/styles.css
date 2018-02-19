@@ -1,0 +1,45 @@
+.leaders-wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
+.leaders-wrapper li {
+  display: block;
+  width: 100%;
+  line-height: 20px;
+  border-bottom: 1px solid green;
+}
+.leaders-wrapper a:hover {
+  color: limegreen;
+}
+.leaders-wrapper a {
+  width: 20%;
+  line-height: 24px;
+  font-size: 16px;
+  display: inline-block;
+}
+.leaders-wrapper li > span {
+  line-height: 24px;
+  font-size: 16px;
+  width: 12%;
+  display: inline-block;
+}
+.leader-board-heading {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Roboto", sans-serif;
+}
+.leader-board-heading:first-of-type {
+  width: 20%;
+}
+.leader-board-heading:last-of-type {
+  width: 20%;
+}
+.lightgreyRow {
+  background: lightgray;
+}
+.greenRow {
+  background: limegreen;
+}
+.salmonRow {
+  background: salmon;
+}
