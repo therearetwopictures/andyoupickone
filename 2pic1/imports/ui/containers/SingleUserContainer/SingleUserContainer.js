@@ -1,31 +1,26 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
+import PropTypes from "prop-types";
 import InsightsNavBar from "../../components/InsightsNavBar";
-import UserData from "../../../api/userData/userData.js";
+import UserData from "../../../api/userData/userData";
 import Loading from "../../components/loading/";
 import SingleUser from "../../components/SingleUser";
-import PropTypes from "prop-types";
 
-class SingleUserContainer extends Component {
-  constructor(props) {
-    super(props);
+const SingleUserContainer = ({ loading, userData }) => {
+  if (loading) {
+    return <Loading />;
   }
-  render() {
-    const { loading, userData } = this.props;
-    if (loading) {
-      return <Loading />;
-    }
-    return (
-      <div>
-        <SingleUser
-          userId={userData[0]._id}
-          numPicks={userData[0].picks.length}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <InsightsNavBar />
+      <SingleUser
+        userId={userData[0]._id}
+        numPicks={userData[0].picks.length}
+      />
+    </div>
+  );
+};
 
 SingleUserContainer.defaultProps = {
   loading: true,

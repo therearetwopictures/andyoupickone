@@ -31,8 +31,8 @@ class UserRow extends Component {
       const { A, B } = nextProps.user[0].picks
         ? nextProps.user[0].picks.reduce(
             (acc, curr) => {
-              if (curr.pick === "A") acc.A = acc.A + 1;
-              if (curr.pick === "B") acc.B = acc.B + 1;
+              if (curr.pick === "A") acc.A += 1;
+              if (curr.pick === "B") acc.B += 1;
               return acc;
             },
             {
