@@ -13,21 +13,30 @@ class StatsContainer extends Component {
     super(props);
   }
   getWatsonColorTags = () => {
-    const color = /color/;
-    this.props.comparisons.reduce((acc, comp) => {
+    const colorRegex = /color/;
+    this.props.comparisons.reduce((accu, comp) => {
       if (comp.tagsA) {
-        comp.tagsA.forEach(tag => {
+        let compATags = comp.tagsA.reduce((colorTags, tag) => {
           tagClass = tag.class;
-          if (color.test(tagClass)) {
-            console.log("found a color!");
-            let arr = tagClass.split(" ");
-            console.log(arr[1]);
+          if (colorRegex.test(tagClass)) {
+            let tagWords = tagClass.split(" ");
+            if (tagWords[tagWords.length - 2] in colorTags) {
+              colorTags[tagWords[tagWords.length - 2]]++;
+            } else {
+              colorTags[tagWords[tagWords.length - 2]] = 1;
+            }
           }
-        });
+          return colorTags;
+        }, {});
+        if (compATags in accu) {
+        }
+        console.log(compATags);
       }
+
       if (comp.tagsB) {
         comp.tagsB.forEach(() => {});
       }
+      return accu;
     }, {});
   };
 
@@ -39,7 +48,7 @@ class StatsContainer extends Component {
         <h1 className="header">Stats!</h1>
         <Stats />
         <ScatterPlot />
-        <GridFlasher comps={this.props.comparisons} />
+        {/* <GridFlasher comps={this.props.comparisons} /> */}
       </div>
     );
   }
@@ -48,6 +57,6 @@ class StatsContainer extends Component {
 export default withTracker(() => {
   Meteor.subscribe("comparisons.all");
   return {
-    comparisons: Comparisons.find({}, { fields: { _id: 1 } }).fetch()
+    comparisons: Comparisons.find({}).fetch()
   };
 })(StatsContainer);
