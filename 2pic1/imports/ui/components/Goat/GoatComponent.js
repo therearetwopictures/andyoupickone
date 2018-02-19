@@ -3,10 +3,12 @@ import "./styles.css";
 
 const GoatComponent = props => (
   <div className="container">
-    <h1>GOAT</h1>
+    <div className="header">
+      <h1>GOAT</h1>
+    </div>
     <div className="item">
-      <div className="picture-wrapper">
-        <h1>Most Popular Image:</h1>
+      <div className="goat-picture-wrapper">
+        <h2>Most Popular Image:</h2>
         <img src={props.mostPopularImage.url} />
         <div className="desc">
           Picked {props.mostPopularImage.count}{" "}
@@ -14,8 +16,8 @@ const GoatComponent = props => (
         </div>
       </div>
 
-      <div className="picture-wrapper">
-        <h1>Least Popular Image:</h1>
+      <div className="goat-picture-wrapper">
+        <h2>Least Popular Image:</h2>
         <img src={props.leastPopularImage.url} />
         <div className="desc">
           Picked {props.leastPopularImage.count}{" "}
@@ -23,20 +25,20 @@ const GoatComponent = props => (
         </div>
       </div>
     </div>
-    <h1>Most Popular Comparison:</h1>
+    <h2>Most Popular Comparison:</h2>
     <p>
       Viewed {props.mostPopularComparison.count}{" "}
       {props.mostPopularComparison.count > 1 ? "times" : "time"}
     </p>
     <div className="item">
-      <div className="picture-wrapper">
+      <div className="goat-picture-wrapper">
         <img src={props.mostPopularComparison.urlA} />
         <div className="desc">
           Picked {props.mostPopularComparison.ACount}{" "}
           {props.mostPopularComparison.ACount > 1 ? "times" : "time"}
         </div>
       </div>
-      <div className="picture-wrapper">
+      <div className="goat-picture-wrapper">
         <img src={props.mostPopularComparison.urlB} />
         <div className="desc">
           Picked {props.mostPopularComparison.BCount}{" "}
@@ -44,20 +46,20 @@ const GoatComponent = props => (
         </div>
       </div>
     </div>
-    <h1>Most Contentious Comparison:</h1>
+    <h2>Most Contentious Comparison:</h2>
     <p>
       Viewed {props.closestToEvenSplit.count}{" "}
       {props.closestToEvenSplit.count > 1 ? "times" : "time"}
     </p>
     <div className="item">
-      <div className="picture-wrapper">
+      <div className="goat-picture-wrapper">
         <img src={props.closestToEvenSplit.urlA} />
         <div className="desc">
           Picked {props.closestToEvenSplit.ACount}{" "}
           {props.closestToEvenSplit.ACount > 1 ? "times" : "time"}
         </div>
       </div>
-      <div className="picture-wrapper">
+      <div className="goat-picture-wrapper">
         <img src={props.closestToEvenSplit.urlB} />
         <div className="desc">
           Picked {props.closestToEvenSplit.BCount}{" "}

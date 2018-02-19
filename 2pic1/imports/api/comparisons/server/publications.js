@@ -14,3 +14,6 @@ Meteor.publish("comparisons.tagsA", function() {
 Meteor.publish("comparisons.tagsA", function() {
   return Comparisons.find({}, { fields: { tagsB: 1 } });
 });
+Meteor.publish("comparisons.byCompId", function(compId) {
+  return Comparisons.find({ _id: compId });
+});
