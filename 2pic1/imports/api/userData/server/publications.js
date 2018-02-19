@@ -1,8 +1,13 @@
 // All UserData-related publications
-
 import { Meteor } from "meteor/meteor";
-import { Comparisons } from "../userData.js";
+import UserData from "../userData.js";
 
-Meteor.publish("userData.all", function() {
-  return UserData.find();
-});
+if (Meteor.isServer) {
+  Meteor.publish("userData.all", function() {
+    return UserData.find();
+  });
+
+  Meteor.publish("userData.byUserId", function(userId) {
+    return UserData.find({ _id: userId });
+  });
+}
