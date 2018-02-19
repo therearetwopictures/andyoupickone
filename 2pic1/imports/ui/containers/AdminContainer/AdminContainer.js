@@ -21,23 +21,15 @@ class AdminContainer extends Component {
     const isAdmin =
       this.props.currentUser && this.props.currentUser.role === "admin";
     return (
-      <div>
+      <div className="admin-page">
+        <h2>Administration Station</h2>
         <div className="login-box">
           <LoginBox />
         </div>
         {isAdmin ? (
-          <div className="watson-functions-container">
-            <h1>Administration Station</h1>
-            <button
-              onClick={e => {
-                e.preventDefault();
-                Meteor.call("comparisons.classifyImage");
-              }}
-            >
-              Generate Tags
-            </button>
+          <div className="admin-container">
             <h2>Create up new admin</h2>
-            <form>
+            <form className="admin-form">
               <input
                 placeholder="Email"
                 type="email"
@@ -65,6 +57,15 @@ class AdminContainer extends Component {
                 New Admin User
               </button>
             </form>
+
+            <button
+              onClick={e => {
+                e.preventDefault();
+                Meteor.call("comparisons.classifyImage");
+              }}
+            >
+              Generate Tags
+            </button>
 
             <button
               onClick={e => {

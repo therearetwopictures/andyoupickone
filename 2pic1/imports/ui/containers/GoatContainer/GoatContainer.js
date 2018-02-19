@@ -90,7 +90,6 @@ export default class GoatContainer extends Component {
     this.getLeastPopularImage();
     this.getMostPopularComparison();
     this.getClosestToEvenSplit();
-    this.getAVB();
   }
 
   render() {

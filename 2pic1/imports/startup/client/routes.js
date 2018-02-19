@@ -7,6 +7,7 @@ import AdminContainer from "../../ui/containers/AdminContainer";
 import Reset from "../../ui/components/reset";
 import StatsContainer from "../../ui/containers/StatsContainer/";
 import SingleStatsContainer from "../../ui/containers/SingleStatsContainer/";
+import SingleUserContainer from "../../ui/containers/UserContainer/";
 import GoatContainer from "../../ui/containers/GoatContainer/";
 import LeaderBoardContainer from "../../ui/containers/LeadersContainer/";
 
@@ -38,7 +39,7 @@ export default Meteor.startup(() => {
             exact
             path="/user/:userId"
             render={({ match }) => (
-              <UserContainer userId={match.params.userId} />
+              <SingleUserContainer userId={match.params.userId} />
             )}
           />
           <Route
