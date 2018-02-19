@@ -14,13 +14,13 @@ export default class Flasher extends React.Component {
       this.setState({ A: nextProps.A, className: "greenFlasher" });
       setTimeout(() => {
         this.setState({ className: "greyFlasher" });
-      }, 128);
+      }, 0);
     }
     if (nextProps.B !== this.state.B) {
       this.setState({ B: nextProps.B, className: "salmonFlasher" });
       setTimeout(() => {
         this.setState({ className: "greyFlasher" });
-      }, 128);
+      }, 0);
     }
   }
 
