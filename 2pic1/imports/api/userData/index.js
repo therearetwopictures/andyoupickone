@@ -1,4 +1,4 @@
-import UserData from "./userData.js";
-import "./methods";
+import UserData from './userData.js';
+import './methods';
 
 export default UserData;
