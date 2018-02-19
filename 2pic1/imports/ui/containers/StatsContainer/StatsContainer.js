@@ -19,6 +19,8 @@ class StatsContainer extends Component {
           tagClass = tag.class;
           if (color.test(tagClass)) {
             console.log("found a color!");
+            let arr = tagClass.split(" ");
+            console.log(arr[1]);
           }
         });
       }
