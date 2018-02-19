@@ -6,6 +6,7 @@ import AppComponent from "../../ui/containers/app/app.js";
 import AdminContainer from "../../ui/containers/AdminContainer";
 import Reset from "../../ui/components/reset";
 import StatsContainer from "../../ui/containers/StatsContainer/";
+import SingleStatsContainer from "../../ui/containers/SingleStatsContainer/";
 import GoatContainer from "../../ui/containers/GoatContainer/";
 import LeaderBoardContainer from "../../ui/containers/LeadersContainer/";
 

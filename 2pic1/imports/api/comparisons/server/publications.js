@@ -9,3 +9,7 @@ Meteor.publish("comparisons.all", function() {
 Meteor.publish("comparisons.getByCompId", function(compId) {
   return Comparisons.find(compId);
 });
+
+Meteor.publish("comparisons.byCompId", function(compId) {
+  return Comparisons.find({ _id: compId });
+});

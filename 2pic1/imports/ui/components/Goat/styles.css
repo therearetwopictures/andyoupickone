@@ -11,14 +11,14 @@
   flex-wrap: wrap;
   flex-direction: row;
 }
-div.picture-wrapper {
+div.goat-picture-wrapper {
     margin: 5px;
     border: 1px solid #ccc;
     float: left;
     width: 300px;
 }
 
-div.picture-wrapper img {
+div.goat-picture-wrapper img {
     width: 100%;
     height: auto;
 }
