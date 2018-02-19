@@ -1,5 +1,6 @@
 import React from "react";
 import UserRow from "./UserRow";
+import PropTypes from "prop-types";
 import "./styles.css";
 
 const Leaders = ({ userIds }) => (
@@ -18,5 +19,13 @@ const Leaders = ({ userIds }) => (
     ))}
   </ol>
 );
+
+Leaders.defaultProps = {
+  userIds: []
+};
+
+Leaders.propTypes = {
+  userIds: PropTypes.array
+};
 
 export default Leaders;
