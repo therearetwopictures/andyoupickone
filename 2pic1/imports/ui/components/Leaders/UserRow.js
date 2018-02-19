@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 import UserData from "../../../api/userData/userData";
+import PropTypes from "prop-types";
 
 class UserRow extends Component {
   constructor() {
@@ -102,6 +103,16 @@ class UserRow extends Component {
     );
   }
 }
+
+UserRow.defaultProps = {
+  user: [],
+  currentUserId: ""
+};
+
+UserRow.propTypes = {
+  user: PropTypes.array,
+  currentUserId: PropTypes.string
+};
 
 export default withTracker(({ id }) => {
   Meteor.subscribe("userData.byUserId", id);
