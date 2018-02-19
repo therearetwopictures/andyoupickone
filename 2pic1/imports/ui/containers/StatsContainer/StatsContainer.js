@@ -6,6 +6,7 @@ import Stats from "../../components/Stats";
 import ScatterPlot from "../../components/ScatterPlot";
 import InsightsNavBar from "../../components/InsightsNavBar";
 import Comparisons from "../../../api/comparisons/comparisons";
+import GridFlasher from "../../components/GridFlasher";
 
 class StatsContainer extends Component {
   constructor(props) {
@@ -15,8 +16,10 @@ class StatsContainer extends Component {
     return (
       <div>
         <InsightsNavBar />
+        <h1 className="header">Stats!</h1>
         <Stats />
         <ScatterPlot />
+        <GridFlasher comps={this.props.comparisons} />
       </div>
     );
   }
@@ -25,6 +28,6 @@ class StatsContainer extends Component {
 export default withTracker(() => {
   Meteor.subscribe("comparisons.all");
   return {
-    comparisons: Comparisons.find({}).fetch()
+    comparisons: Comparisons.find({}, { fields: { _id: 1 } }).fetch()
   };
 })(StatsContainer);
