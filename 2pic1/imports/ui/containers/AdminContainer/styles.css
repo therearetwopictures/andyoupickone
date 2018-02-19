@@ -1,3 +1,29 @@
 h2.ui.header {
   display: none;
 }
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-page button {
+  margin: 10px;
+  padding: 15px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-form input {
+  margin: 5px;
+  padding: 5px;
+}
+
+.admin-container {
+  width: 50%;
+  margin: 0, auto;
+}
