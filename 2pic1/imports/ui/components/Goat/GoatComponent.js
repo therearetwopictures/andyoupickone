@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import "./styles.css";
+import PropTypes from "prop-types";
 
-const GoatComponent = props => (
+const GoatComponent = ({
+  mostPopularImage,
+  leastPopularImage,
+  mostPopularComparison,
+  closestToEvenSplit
+}) => (
   <div className="container">
     <div className="header">
       <h1>GOAT</h1>
@@ -9,65 +15,79 @@ const GoatComponent = props => (
     <div className="item">
       <div className="goat-picture-wrapper">
         <h2>Most Popular Image:</h2>
-        <img src={props.mostPopularImage.url} />
+        <img src={mostPopularImage.url} />
         <div className="desc">
-          Picked {props.mostPopularImage.count}{" "}
-          {props.mostPopularImage.count > 1 ? "times" : "time"}
+          Picked {mostPopularImage.count}{" "}
+          {mostPopularImage.count !== 1 ? "times" : "time"}
         </div>
       </div>
 
       <div className="goat-picture-wrapper">
         <h2>Least Popular Image:</h2>
-        <img src={props.leastPopularImage.url} />
+        <img src={leastPopularImage.url} />
         <div className="desc">
-          Picked {props.leastPopularImage.count}{" "}
-          {props.leastPopularImage.count > 1 ? "times" : "time"}
+          Picked {leastPopularImage.count}{" "}
+          {leastPopularImage.count !== 1 ? "times" : "time"}
         </div>
       </div>
     </div>
     <h2>Most Popular Comparison:</h2>
     <p>
-      Viewed {props.mostPopularComparison.count}{" "}
-      {props.mostPopularComparison.count > 1 ? "times" : "time"}
+      Viewed {mostPopularComparison.count}{" "}
+      {mostPopularComparison.count !== 1 ? "times" : "time"}
     </p>
     <div className="item">
       <div className="goat-picture-wrapper">
-        <img src={props.mostPopularComparison.urlA} />
+        <img src={mostPopularComparison.urlA} />
         <div className="desc">
-          Picked {props.mostPopularComparison.ACount}{" "}
-          {props.mostPopularComparison.ACount > 1 ? "times" : "time"}
+          Picked {mostPopularComparison.ACount}{" "}
+          {mostPopularComparison.ACount !== 1 ? "times" : "time"}
         </div>
       </div>
       <div className="goat-picture-wrapper">
-        <img src={props.mostPopularComparison.urlB} />
+        <img src={mostPopularComparison.urlB} />
         <div className="desc">
-          Picked {props.mostPopularComparison.BCount}{" "}
-          {props.mostPopularComparison.BCount > 1 ? "times" : "time"}
+          Picked {mostPopularComparison.BCount}{" "}
+          {mostPopularComparison.BCount !== 1 ? "times" : "time"}
         </div>
       </div>
     </div>
     <h2>Most Contentious Comparison:</h2>
     <p>
-      Viewed {props.closestToEvenSplit.count}{" "}
-      {props.closestToEvenSplit.count > 1 ? "times" : "time"}
+      Viewed {closestToEvenSplit.count}{" "}
+      {closestToEvenSplit.count !== 1 ? "times" : "time"}
     </p>
     <div className="item">
       <div className="goat-picture-wrapper">
-        <img src={props.closestToEvenSplit.urlA} />
+        <img src={closestToEvenSplit.urlA} />
         <div className="desc">
-          Picked {props.closestToEvenSplit.ACount}{" "}
-          {props.closestToEvenSplit.ACount > 1 ? "times" : "time"}
+          Picked {closestToEvenSplit.ACount}{" "}
+          {closestToEvenSplit.ACount !== 1 ? "times" : "time"}
         </div>
       </div>
       <div className="goat-picture-wrapper">
-        <img src={props.closestToEvenSplit.urlB} />
+        <img src={closestToEvenSplit.urlB} />
         <div className="desc">
-          Picked {props.closestToEvenSplit.BCount}{" "}
-          {props.closestToEvenSplit.BCount > 1 ? "times" : "time"}
+          Picked {closestToEvenSplit.BCount}{" "}
+          {closestToEvenSplit.BCount !== 1 ? "times" : "time"}
         </div>
       </div>
     </div>
   </div>
 );
+
+GoatComponent.defaultProps = {
+  mostPopularImage: {},
+  leastPopularImage: {},
+  mostPopularComparison: {},
+  closestToEvenSplit: {}
+};
+
+GoatComponent.propTypes = {
+  mostPopularImage: PropTypes.object,
+  leastPopularImage: PropTypes.object,
+  mostPopularComparison: PropTypes.object,
+  closestToEvenSplit: PropTypes.object
+};
 
 export default GoatComponent;
