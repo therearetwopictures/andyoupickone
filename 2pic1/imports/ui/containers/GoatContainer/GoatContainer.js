@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import GoatComponent from "../../components/Goat";
+import InsightsNavBar from "../../components/InsightsNavBar";
 
 export default class GoatContainer extends Component {
   constructor(props) {
@@ -95,6 +96,7 @@ export default class GoatContainer extends Component {
   render() {
     return (
       <div>
+        <InsightsNavBar />
         <GoatComponent
           mostPopularImage={this.state.mostPopularImage}
           leastPopularImage={this.state.leastPopularImage}
