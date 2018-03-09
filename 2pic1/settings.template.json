@@ -1,0 +1,23 @@
+{
+  "googleSearch": [
+    {
+      "engineId": "engine_id_here",
+      "apiKey": "api_key_here"
+    },
+    {
+      "engineId": "another_engine_id_here",
+      "apiKey": "another_api_key_here"
+    }
+  ],
+  "GCS": {
+    "projectId": "project_id_here",
+    "JSONKeyFile": "JSONKeyFile_here.json",
+    "email": "GCS_email_here",
+    "bucket": "bucket_name_here"
+  },
+  "watson": {
+    "url": "https://gateway-a.watsonplatform.net/visual-recognition/api",
+    "note": "It may take up to 5 minutes for this key to become active",
+    "api_key": "watson_api_key"
+  }
+}
