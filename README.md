@@ -4,7 +4,7 @@
 
 ### http://www.therearetwopicturesandyoupick.one/
 
-2pic1 is a project made by lindsey woo, scott livingstone, and ian hitchcock as a project for class at red academy.
+2pic1 is a project made by lindsey woo, scott livingstone, and ian hitchcock as a project for class at red academy. it started as a bit of a joke when the team elected to build an app where there would be 2 pictures, of which the user would pick one. their classmates had many questions despite the instructions which double as the title. from there, the team built an elaborate app which randomly selects images from google and keeps track of user picks.
 
 #### goal
 
